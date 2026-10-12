@@ -513,6 +513,7 @@ function detectInstallation(descriptor, paths, options) {
     case "traecode":
     case "qwenwork":
     case "minimax":
+    case "command-code":
       if (dirExists(fsImpl, paths.parentDir)) return installationResult(true, "high", "parent-dir", `${paths.parentDir} exists`);
       return notFound();
     case "zcode":
