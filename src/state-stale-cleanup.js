@@ -5,6 +5,7 @@ const {
   isCodexDesktopOriginator,
 } = require("../hooks/codex-originator");
 const { deriveCodexHomeFromTranscriptPath } = require("./codex-thread-id");
+const { isWslSourced } = require("./remote-process-metadata");
 
 const SESSION_STALE_MS = 600000;
 const WORKING_STALE_MS = 300000;
@@ -75,6 +76,14 @@ function isLocalTraeDesktopIdleSession(session) {
     && session.state === "idle";
 }
 
+function isLocalWorkBuddyDesktopIdleSession(session) {
+  return !!session
+    && session.agentId === "workbuddy"
+    && !session.host
+    && !session.headless
+    && session.state === "idle";
+}
+
 function getStaleSessionDecision(session, options = {}) {
   const now = options.now;
   const config = options.staleConfig || {};
@@ -115,6 +124,12 @@ function getStaleSessionDecision(session, options = {}) {
   }
 
   const isProcessAlive = options.isProcessAlive;
+  // A WSL session's PIDs are Linux PIDs that can alias unrelated live processes
+  // on this Windows host. Never probe them: treat the session as PID-unreachable
+  // so it retires by idle age (`unreachable`) instead of by a bogus agent/source
+  // exit. `wslDistro`/`host` are sticky on the session once set.
+  const wslSourced = isWslSourced({ wslDistro: session.wslDistro, host: session.host });
+  const pidReachable = wslSourced ? false : !!session.pidReachable;
   const livenessByPid = new Map();
   const isProcessAliveOnce = (pid) => {
     if (livenessByPid.has(pid)) return livenessByPid.get(pid);
@@ -122,7 +137,7 @@ function getStaleSessionDecision(session, options = {}) {
     livenessByPid.set(pid, alive);
     return alive;
   };
-  const hasReachableAgentPid = !!(session.pidReachable && session.agentPid);
+  const hasReachableAgentPid = !!(pidReachable && session.agentPid);
   const agentAlive = hasReachableAgentPid ? isProcessAliveOnce(session.agentPid) : null;
 
   if (hasReachableAgentPid && !agentAlive) {
@@ -186,6 +201,20 @@ function getStaleSessionDecision(session, options = {}) {
     return { action: "delete", reason: "traecode-desktop-idle-timeout" };
   }
 
+  // WorkBuddy emits Stop when a turn finishes (stored as idle) but never emits
+  // SessionEnd, and archiving or deleting a conversation sends no event either.
+  // On Windows agent_pid is the long-lived main process, so a live process
+  // cannot vouch for an individual finished conversation forever — apply the
+  // same configured idle cutoff used for Codex Desktop, ZCode, and TraeCode.
+  // agent-exit above still wins when WorkBuddy itself quits.
+  if (
+    sessionStaleMs > 0
+    && age > sessionStaleMs
+    && isLocalWorkBuddyDesktopIdleSession(session)
+  ) {
+    return { action: "delete", reason: "workbuddy-desktop-idle-timeout" };
+  }
+
   // NOTE: requiresCompletionAck does NOT hold a session out of stale cleanup.
   // The completion notification (e.g. Telegram push) already fires once at the
   // completion instant, so an unacknowledged remote session has already been
@@ -226,7 +255,7 @@ function getStaleSessionDecision(session, options = {}) {
     // failed, so the earlier agent-exit check cannot retire it on its own.
     if (
       (workingStaleMs === 0 || workingWindowElapsed)
-      && session.pidReachable && session.sourcePid
+      && pidReachable && session.sourcePid
       && !agentAlive
       && !isProcessAliveOnce(session.sourcePid)
     ) {
@@ -240,7 +269,7 @@ function getStaleSessionDecision(session, options = {}) {
 
   // sessionStaleMs === 0 disables the idle/non-working age cutoff entirely.
   if (sessionStaleMs > 0 && age > sessionStaleMs) {
-    if (session.pidReachable && session.sourcePid) {
+    if (pidReachable && session.sourcePid) {
       // A per-event wrapper is weaker evidence than a reachable live agent.
       // The special per-conversation desktop cutoffs above still win; for
       // ordinary sessions, only fall back to source death when no live agent
@@ -251,7 +280,7 @@ function getStaleSessionDecision(session, options = {}) {
       if (session.state !== "idle") {
         return { action: "idle", reason: "session-timeout", updateTimestamp: false };
       }
-    } else if (!session.pidReachable) {
+    } else if (!pidReachable) {
       return { action: "delete", reason: "unreachable" };
     } else {
       return { action: "delete", reason: "no-source" };
@@ -273,5 +302,6 @@ module.exports = {
   isLocalOpencodeWorkingLikeSession,
   isLocalZcodeDesktopIdleSession,
   isLocalTraeDesktopIdleSession,
+  isLocalWorkBuddyDesktopIdleSession,
   getStaleSessionDecision,
 };

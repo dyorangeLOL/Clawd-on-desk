@@ -92,6 +92,7 @@ function makeCtx(overrides = {}) {
     permLog: (message) => calls.logs.push(message),
     isAgentEnabled: () => true,
     isAgentPermissionsEnabled: () => true,
+    isCodexPermissionInterceptEnabled: () => true,
     isAgentSubagentPermissionsEnabled: () => true,
     updateSession: (...args) => calls.updateSession.push(args),
     showPermissionBubble: (entry) => calls.showPermissionBubble.push(entry),
@@ -105,7 +106,7 @@ function makeCtx(overrides = {}) {
       calls.dismissOpencodeFamilyPermissionResolvedExternally.push(payload);
       return 0;
     },
-    resolvePermissionEntry: (entry, behavior, message) => calls.resolved.push({ entry, behavior, message }),
+    resolvePermissionEntry: (entry, behavior, message, options) => calls.resolved.push({ entry, behavior, message, options }),
     maybeStartRemoteApproval: (entry) => calls.maybeStartRemoteApproval.push(entry),
     addPendingPermission(entry) {
       calls.addPendingPermission.push(entry);
@@ -284,6 +285,7 @@ describe("server-route-permission helpers", () => {
     }), true);
     assert.strictEqual(shouldBypassCopilotBubble({
       isAgentPermissionsEnabled: () => true,
+    isCodexPermissionInterceptEnabled: () => true,
     }), false);
   });
 
@@ -822,6 +824,118 @@ describe("server-route-permission POST", () => {
       orcaPaneKey: "8ce1fff7-tab:9813824b-leaf",
       cwd: "/repo",
     });
+  });
+
+  it("strips WSL permission process metadata without changing Codex automation eligibility", async () => {
+    const sessionId = "codex:019e115a-4df2-7ed0-b90e-8e6345aca777";
+    const res = await callPermissionPost(JSON.stringify({
+      agent_id: "codex",
+      session_id: sessionId,
+      tool_name: "Bash",
+      tool_input: { command: "npm test" },
+      source_pid: 456,
+      agent_pid: 456,
+      pid_chain: [789, 456, -1],
+      editor: "cursor",
+      tmux_socket: "/tmp/tmux-1000/work",
+      tmux_client: "/dev/pts/7",
+      orca_pane_key: "8ce1fff7-tab:9813824b-leaf",
+      cwd: "/repo",
+      wsl_distro: "Ubuntu",
+      host: "wsl:Ubuntu",
+      platform: "cli",
+      model: "gpt-5.4",
+      codex_originator: "codex-tui",
+      codex_source: "cli",
+      hook_source: "codex-official",
+    }));
+
+    const opts = res.ctx.calls.updateSession[0][3];
+    assert.strictEqual(opts.sourcePid ?? null, null);
+    assert.strictEqual(opts.agentPid ?? null, null);
+    assert.strictEqual(opts.pidChain ?? null, null);
+    assert.strictEqual(opts.editor ?? null, null);
+    assert.strictEqual(opts.tmuxSocket ?? null, null);
+    assert.strictEqual(opts.tmuxClient ?? null, null);
+    assert.strictEqual(opts.orcaPaneKey, "8ce1fff7-tab:9813824b-leaf");
+    assert.strictEqual(opts.cwd, "/repo");
+    assert.strictEqual(opts.host, "wsl:Ubuntu");
+    assert.deepStrictEqual(opts.sessionAutomationIdentity, {
+      eligible: true,
+      reason: "eligible",
+    });
+
+    assert.ok(res.ctx.pendingPermissions[0], "the WSL request must produce a permission entry");
+    const entry = res.ctx.pendingPermissions[0];
+    assert.strictEqual(entry.sourcePid ?? null, null);
+    assert.strictEqual(entry.agentPid ?? null, null);
+    assert.strictEqual(entry.pidChain ?? null, null);
+    assert.deepStrictEqual(entry.sessionAutomationIdentity, {
+      eligible: true,
+      reason: "eligible",
+    });
+  });
+
+  it("keeps a WSL Codex interactive subagent eligible for global auto-approval", async () => {
+    const sessionId = "codex:019e115a-4df2-7ed0-b90e-8e6345aca778";
+    const res = await callPermissionPost(JSON.stringify({
+      agent_id: "codex",
+      session_id: sessionId,
+      tool_name: "Bash",
+      tool_input: { command: "npm test" },
+      hook_source: "codex-official",
+      codex_session_role: "subagent",
+      codex_originator: "codex-tui",
+      codex_source: "cli",
+      source_pid: 456,
+      agent_pid: 456,
+      pid_chain: [789, 456, -1],
+      wsl_distro: "Ubuntu",
+      host: "wsl:Ubuntu",
+    }));
+
+    assert.ok(res.ctx.pendingPermissions[0], "the WSL subagent request must produce a permission entry");
+    const entry = res.ctx.pendingPermissions[0];
+    assert.strictEqual(entry.codexInteractiveSubagent, true);
+    assert.deepStrictEqual(entry.sessionAutomationIdentity, {
+      eligible: true,
+      reason: "eligible",
+    });
+    assert.strictEqual(entry.sourcePid ?? null, null);
+    assert.strictEqual(entry.agentPid ?? null, null);
+    assert.strictEqual(entry.pidChain ?? null, null);
+  });
+
+  it("strips WSL process metadata for the qwen-code permission builder", async () => {
+    const res = await callPermissionPost(JSON.stringify({
+      agent_id: "qwen-code",
+      session_id: "qwen-code:wsl-session",
+      tool_name: "Bash",
+      tool_input: { command: "ls" },
+      source_pid: 111,
+      agent_pid: 222,
+      pid_chain: [333, 222, -1],
+      tmux_socket: "/tmp/tmux-1000/work",
+      tmux_client: "/dev/pts/7",
+      orca_pane_key: "8ce1fff7-tab:9813824b-leaf",
+      cwd: "/repo",
+      wsl_distro: "Ubuntu",
+    }));
+
+    const opts = res.ctx.calls.updateSession[0][3];
+    assert.strictEqual(opts.sourcePid ?? null, null);
+    assert.strictEqual(opts.agentPid ?? null, null);
+    assert.strictEqual(opts.pidChain ?? null, null);
+    assert.strictEqual(opts.tmuxSocket ?? null, null);
+    assert.strictEqual(opts.tmuxClient ?? null, null);
+    assert.strictEqual(opts.orcaPaneKey, "8ce1fff7-tab:9813824b-leaf");
+    assert.strictEqual(opts.cwd, "/repo");
+
+    assert.ok(res.ctx.pendingPermissions[0], "the WSL request must produce a permission entry");
+    const entry = res.ctx.pendingPermissions[0];
+    assert.strictEqual(entry.sourcePid ?? null, null);
+    assert.strictEqual(entry.agentPid ?? null, null);
+    assert.strictEqual(entry.pidChain ?? null, null);
   });
 
   it("strips Hermes permission process metadata on the profile-bound ingress", async () => {
@@ -2386,6 +2500,36 @@ describe("server-route-permission POST", () => {
     assert.deepStrictEqual(res.ctx.calls.maybeStartRemoteApproval, [entry]);
   });
 
+  it("carries the desktop marker into the DSH permission record only for bridge-local traffic", async () => {
+    const base = {
+      agent_id: "deepseek-harness",
+      hook_source: "dsh-plugin",
+      session_id: "deepseek-harness:carrier",
+      tool_name: "execute_shell",
+      tool_input: {},
+      dsh_carrier: "desktop",
+    };
+
+    const local = await callPermissionPost(JSON.stringify(base));
+    assert.strictEqual(local.ctx.calls.updateSession[0][3].dshCarrier, "desktop");
+    assert.strictEqual(local.ctx.pendingPermissions[0].dshCarrier, "desktop");
+
+    const web = await callPermissionPost(JSON.stringify({ ...base, dsh_carrier: "web" }));
+    assert.strictEqual(web.ctx.calls.updateSession[0][3].dshCarrier, undefined);
+    assert.strictEqual(web.ctx.pendingPermissions[0].dshCarrier, undefined);
+
+    const foreignSource = await callPermissionPost(JSON.stringify({ ...base, hook_source: "external" }));
+    assert.strictEqual(foreignSource.ctx.calls.updateSession[0][3].dshCarrier, undefined);
+
+    const remote = await callPermissionPost(JSON.stringify(base), {
+      options: { remoteProfile: { profileId: "remote-1", displayHost: "remote-host" } },
+    });
+    assert.strictEqual(remote.ctx.calls.updateSession[0][3].dshCarrier, undefined);
+
+    const wsl = await callPermissionPost(JSON.stringify({ ...base, wsl_distro: "Ubuntu" }));
+    assert.strictEqual(wsl.ctx.calls.updateSession[0][3].dshCarrier, undefined);
+  });
+
   it("leaves DSH ask_user_question with the native provider", async () => {
     const res = await callPermissionPost(JSON.stringify({
       agent_id: "deepseek-harness",
@@ -2796,6 +2940,10 @@ describe("server-route-permission POST — CC subagent requests (#451)", () => {
       assert.strictEqual(res.ctx.calls.resolved[0].entry, entry);
       assert.strictEqual(res.ctx.calls.resolved[0].behavior, "no-decision");
       assert.strictEqual(res.ctx.calls.resolved[0].message, "Client disconnected");
+      assert.deepStrictEqual(res.ctx.calls.resolved[0].options.disposition, {
+        reason: "agent_gone",
+        decided: false,
+      });
     });
   }
 

@@ -13,6 +13,7 @@ const {
   isLocalQueueableCodexCliIdleSession,
   isLocalZcodeDesktopIdleSession,
   isLocalTraeDesktopIdleSession,
+  isLocalWorkBuddyDesktopIdleSession,
   getStaleSessionDecision,
 } = require("../src/state-stale-cleanup");
 
@@ -63,6 +64,15 @@ function traeDesktopSession(overrides = {}) {
     agentId: "traecode",
     agentPid: 40,
     sourcePid: 41,
+    ...overrides,
+  });
+}
+
+function workbuddyDesktopSession(overrides = {}) {
+  return session({
+    agentId: "workbuddy",
+    agentPid: 50,
+    sourcePid: 51,
     ...overrides,
   });
 }
@@ -150,6 +160,23 @@ describe("state stale cleanup decisions", () => {
       pidReachable: true,
       sourcePid: null,
     })).result, { action: "delete", reason: "no-source" });
+  });
+
+  it("does not change DSH idle cleanup when the desktop carrier is present", () => {
+    const base = {
+      agentId: "deepseek-harness",
+      agentPid: 50,
+      sourcePid: null,
+      updatedAt: 1000000 - SESSION_STALE_MS - 1,
+    };
+    const alivePids = new Set([50]);
+    const carrier = decision(session({ ...base, dshCarrier: "desktop" }), { alivePids });
+    const plain = decision(session(base), { alivePids });
+
+    // The carrier is a focus hint only: it adds no source pid and must not
+    // change liveness or idle retention for the session.
+    assert.deepStrictEqual(carrier.result, plain.result);
+    assert.deepStrictEqual(carrier.result, { action: "delete", reason: "no-source" });
   });
 
   it("handles working stale timeout source exit and idle downgrade", () => {
@@ -521,6 +548,88 @@ describe("state stale cleanup decisions", () => {
       const result = decision(target, { alivePids, staleConfig }).result;
       assert.notStrictEqual(result.reason, "traecode-desktop-idle-timeout");
     }
+  });
+
+  it("issue #655: deletes an idle local WorkBuddy conversation after timeout even while the main process is alive", () => {
+    const { result, calls } = decision(workbuddyDesktopSession({
+      updatedAt: 1000000 - 60_001,
+    }), {
+      alivePids: new Set([50, 51]),
+      staleConfig: { sessionStaleMs: 60_000 },
+    });
+
+    assert.strictEqual(isLocalWorkBuddyDesktopIdleSession(workbuddyDesktopSession()), true);
+    assert.deepStrictEqual(result, { action: "delete", reason: "workbuddy-desktop-idle-timeout" });
+    assert.deepStrictEqual(calls, [50]);
+  });
+
+  it("issue #655: keeps WorkBuddy conversations before the cutoff or when the cutoff is disabled", () => {
+    const alivePids = new Set([50, 51]);
+    assert.deepStrictEqual(decision(workbuddyDesktopSession({
+      updatedAt: 1000000 - 59_999,
+    }), {
+      alivePids,
+      staleConfig: { sessionStaleMs: 60_000 },
+    }).result, { action: null });
+    assert.deepStrictEqual(decision(workbuddyDesktopSession({
+      updatedAt: 1000000 - 24 * 60 * 60 * 1000,
+    }), {
+      alivePids,
+      staleConfig: { sessionStaleMs: 0 },
+    }).result, { action: null });
+  });
+
+  it("issue #655: does not apply the WorkBuddy idle timeout to remote, headless, or working sessions", () => {
+    const updatedAt = 1000000 - 60_001;
+    const alivePids = new Set([50, 51]);
+    const staleConfig = { sessionStaleMs: 60_000 };
+    const cases = [
+      workbuddyDesktopSession({ host: "remote-box", updatedAt }),
+      workbuddyDesktopSession({ headless: true, updatedAt }),
+      workbuddyDesktopSession({ state: "working", updatedAt }),
+    ];
+    for (const target of cases) {
+      const result = decision(target, { alivePids, staleConfig }).result;
+      assert.notStrictEqual(result.reason, "workbuddy-desktop-idle-timeout");
+    }
+
+    // A different agent idling in the same directory keeps its generic live-
+    // agent idle retention.
+    assert.deepStrictEqual(
+      decision(session({ agentId: "claude-code", agentPid: 50, sourcePid: 51, updatedAt }), {
+        alivePids,
+        staleConfig,
+      }).result,
+      { action: null },
+    );
+  });
+
+  it("issue #655: applies the WorkBuddy idle timeout when agent_pid and source_pid are the same main process", () => {
+    const updatedAt = 1000000 - 60_001;
+    const target = workbuddyDesktopSession({ agentPid: 50, sourcePid: 50, updatedAt });
+    const staleConfig = { sessionStaleMs: 60_000 };
+
+    assert.deepStrictEqual(
+      decision(target, { alivePids: new Set([50]), staleConfig }).result,
+      { action: "delete", reason: "workbuddy-desktop-idle-timeout" },
+      "a live main-process pid cannot keep a finished conversation forever",
+    );
+    assert.deepStrictEqual(
+      decision(target, { alivePids: new Set(), staleConfig }).result,
+      { action: "delete", reason: "agent-exit" },
+      "the same pid dying is agent-exit, checked first",
+    );
+  });
+
+  it("issue #655: still deletes a WorkBuddy session by agent-exit before any idle timeout", () => {
+    const { result } = decision(workbuddyDesktopSession({
+      updatedAt: 1000000 - 60_001,
+    }), {
+      alivePids: new Set([51]),
+      staleConfig: { sessionStaleMs: 60_000 },
+    });
+
+    assert.deepStrictEqual(result, { action: "delete", reason: "agent-exit" });
   });
 
   it("treats sessionStaleMs=0 as disabled — does not delete by age", () => {
@@ -981,5 +1090,86 @@ describe("state stale cleanup decisions", () => {
       alivePids: new Set(),
     });
     assert.deepStrictEqual(result, { action: "delete", reason: "agent-exit" });
+  });
+
+  // ── WSL sessions never probe the Windows host with Linux PIDs ──
+
+  it("never probes WSL session PIDs and retires them only by idle age", () => {
+    const now = 2_000_000;
+    const wsl = {
+      agentId: "claude-code",
+      wslDistro: "Ubuntu",
+      host: "wsl:Ubuntu",
+      agentPid: 10,
+      sourcePid: 20,
+    };
+
+    const fresh = decision(session({ ...wsl, state: "idle", updatedAt: now }), {
+      now,
+      alivePids: new Set([10, 20]),
+    });
+    assert.deepStrictEqual(fresh.result, { action: null });
+    assert.deepStrictEqual(fresh.calls, []);
+
+    const working = decision(session({
+      ...wsl,
+      state: "working",
+      updatedAt: now - WORKING_STALE_MS - 1,
+    }), {
+      now,
+      alivePids: new Set([10, 20]),
+    });
+    assert.deepStrictEqual(working.result, {
+      action: "idle",
+      reason: "working-timeout",
+      updateTimestamp: true,
+    });
+    assert.deepStrictEqual(working.calls, []);
+
+    const stale = decision(session({
+      ...wsl,
+      state: "idle",
+      updatedAt: now - SESSION_STALE_MS - 1,
+    }), {
+      now,
+      alivePids: new Set([10, 20]),
+    });
+    assert.deepStrictEqual(stale.result, { action: "delete", reason: "unreachable" });
+    assert.deepStrictEqual(stale.calls, []);
+  });
+
+  it("recognizes a WSL session from either the wslDistro or the wsl: host marker", () => {
+    const now = 2_000_000;
+    for (const marker of [{ wslDistro: "Ubuntu" }, { host: "wsl:Ubuntu" }]) {
+      const { result, calls } = decision(session({
+        state: "idle",
+        agentId: "kimi-cli",
+        agentPid: 10,
+        sourcePid: 20,
+        updatedAt: now - SESSION_STALE_MS - 1,
+        ...marker,
+      }), { now, alivePids: new Set([10]) });
+      assert.deepStrictEqual(result, { action: "delete", reason: "unreachable" });
+      assert.deepStrictEqual(calls, []);
+    }
+  });
+
+  it("keeps a WSL session of any age when sessionStaleMs is disabled", () => {
+    const now = 2_000_000;
+    const { result, calls } = decision(session({
+      state: "idle",
+      agentId: "claude-code",
+      wslDistro: "Ubuntu",
+      host: "wsl:Ubuntu",
+      agentPid: 10,
+      sourcePid: 20,
+      updatedAt: now - 86_400_000,
+    }), {
+      now,
+      staleConfig: { sessionStaleMs: 0 },
+      alivePids: new Set([10, 20]),
+    });
+    assert.deepStrictEqual(result, { action: null });
+    assert.deepStrictEqual(calls, []);
   });
 });

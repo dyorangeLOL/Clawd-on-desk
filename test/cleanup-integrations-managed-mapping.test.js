@@ -58,16 +58,15 @@ describe("#1026 r1 cleanupIntegrations structured-result mapping", () => {
   it("keeps the success case: registration removed leaves no active entry", async () => {
     const home = tmp("clawd-cleanup-map-ok-");
     fs.mkdirSync(path.join(home, ".config", "opencode"), { recursive: true });
-    registerOpencodePlugin({ silent: true, homeDir: home });
+    registerOpencodePlugin({ silent: true, v2Host: "v2", homeDir: home });
 
     const result = await cleanupIntegrations({ homeDir: home, silent: true });
     const agent = opencodeAgent(result);
     assert.strictEqual(agent.registrationRemoved, true);
     assert.strictEqual(agent.activeEntryRemaining, false);
     assert.notStrictEqual(agent.status, "failed");
-    assert.deepStrictEqual(
-      JSON.parse(fs.readFileSync(path.join(home, ".config", "opencode", "opencode.json"), "utf8")).plugin,
-      []
-    );
+    const cfg = JSON.parse(fs.readFileSync(path.join(home, ".config", "opencode", "opencode.json"), "utf8"));
+    assert.deepStrictEqual(cfg.plugins || [], [], "v2 key swept");
+    assert.ok(!Object.hasOwn(cfg, "plugin") || cfg.plugin.length === 0, "v1 key swept");
   });
 });

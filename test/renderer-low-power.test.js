@@ -904,6 +904,27 @@ describe("renderer displayed-visual settlement", () => {
     assert.deepStrictEqual(settlements(harness).map((entry) => entry.visualGeneration), [11]);
   });
 
+  for (const objectChannel of [false, true]) {
+    it(`replays the displayed compaction SVG through the ${objectChannel ? "object" : "img"} channel`, () => {
+      const harness = createRendererHarness({
+        themeConfig: objectChannel ? { rendering: { objectChannelFiles: ["sweeping.svg"] } } : {},
+      });
+      harness.electronHandlers.onStateChange(visualRequest(12, "sweeping.svg", "sweeping"));
+      const first = harness.api.pendingNext;
+      first.listeners.get("load")();
+      harness.electronHandlers.onStateChange({
+        ...visualRequest(13, "sweeping.svg", "sweeping"), restartAnimation: true,
+      });
+      const replay = harness.api.pendingNext;
+      assert.ok(replay, "completion must load a fresh animation timeline");
+      assert.notStrictEqual(replay, first);
+      assert.notStrictEqual(objectChannel ? replay.data : replay.src, objectChannel ? first.data : first.src);
+      assert.strictEqual(replay.tagName, objectChannel ? "OBJECT" : "IMG");
+      replay.listeners.get("load")();
+      assert.deepStrictEqual(settlements(harness).map(entry => entry.outcome), ["swapped", "swapped"]);
+    });
+  }
+
   it("reports an object-to-img recovery as a verified fallback", () => {
     const harness = createRendererHarness({
       themeConfig: { trustedScriptedSvgFiles: ["scripted.svg"] },
@@ -3034,6 +3055,39 @@ describe("renderer glyph flip compensation", () => {
     } finally {
       harness.restore();
     }
+  });
+
+  it("updates idle orientation and accessory facing when the same resting file crosses sides", () => {
+    const harness = createRendererHarness({ themeConfig: { rightSideMirrorFiles: ["bubble.svg"] } });
+    harness.electronHandlers.onPetScreenSide(false);
+    harness.electronHandlers.onStateChange("idle", "bubble.svg");
+    harness.api.pendingNext.listeners.get("load")();
+    const displayed = harness.api.clawdEl;
+    harness.electronHandlers.onPetScreenSide(true);
+    harness.electronHandlers.onStateChange("idle", "bubble.svg");
+    assert.strictEqual(harness.api.pendingNext, null);
+    assert.strictEqual(harness.api.clawdEl, displayed);
+    assert.strictEqual(harness.assetDirectionStage.style.scale, "-1 1");
+    const report = () => harness.electronCalls.filter((call) => call.name === "reportAccessoryMirror").at(-1).args[0];
+    assert.strictEqual(report(), true);
+    harness.electronHandlers.onPetScreenSide(false);
+    assert.strictEqual(harness.assetDirectionStage.style.scale, "none");
+    assert.strictEqual(report(), false);
+  });
+
+  it("keeps idle glyph variants mirrored when side arrives during an image load", () => {
+    const harness = createRendererHarness({
+      themeConfig: { rightSideMirrorFiles: ["bubble.svg", "bubble-left.svg"] },
+    });
+    harness.electronHandlers.onStateChange("idle", "bubble-left.svg");
+    const pending = harness.api.pendingNext;
+    harness.electronHandlers.onPetScreenSide(true);
+    pending.listeners.get("load")();
+    assert.strictEqual(harness.api.currentDisplayedSvg, "bubble-left.svg");
+    assert.strictEqual(harness.assetDirectionStage.style.scale, "-1 1");
+    harness.electronHandlers.onStateChange("idle", "current.svg");
+    harness.api.pendingNext.listeners.get("load")();
+    assert.strictEqual(harness.assetDirectionStage.style.scale, "none");
   });
 
   it("tells main which way the accessory ended up facing", () => {
