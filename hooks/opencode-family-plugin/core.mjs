@@ -515,6 +515,25 @@ export function evaluateManagedLayoutGate(metaUrl, config = {}) {
  * @param {string} config.sessionIdPrefix  e.g. "opencode:"
  * @returns {function} the plugin entrypoint (default-exported by the entry)
  */
+export function resolveOpencodeServeAttachUrl(agentId, argv, value) {
+  if (agentId !== "opencode" || !Array.isArray(argv)) return null;
+  // Native v1 CLI argv: [executable, serve, ...]. Never infer from the URL:
+  // the normal TUI also exposes an internal SDK endpoint.
+  if (argv[1] !== "serve") return null;
+  try {
+    const raw = String(value || "");
+    if (!raw || raw.length > 2048 || /[\s\u0000-\u001f\u007f]/u.test(raw)) return null;
+    const url = new URL(raw);
+    if (!["http:", "https:"].includes(url.protocol) || url.username || url.password
+      || url.search || url.hash || url.pathname !== "/") return null;
+    if (url.hostname === "0.0.0.0") url.hostname = "127.0.0.1";
+    if (url.hostname === "[::]") url.hostname = "[::1]";
+    if (url.hostname !== "localhost" && url.hostname !== "[::1]"
+      && !/^127(?:\.\d{1,3}){3}$/.test(url.hostname)) return null;
+    return url.href;
+  } catch { return null; }
+}
+
 export function createOpencodeFamilyPlugin(config) {
   const { agentId, hookSource, logFileName, sessionIdPrefix } = config || {};
   for (const [key, value] of Object.entries({ agentId, hookSource, logFileName, sessionIdPrefix })) {
@@ -577,6 +596,7 @@ export function createOpencodeFamilyPlugin(config) {
   // outbound cwd consumes it only until the host's info-directory latch proves
   // map misses must fail closed.
   const _sessionInstanceDirectoryById = new Map();
+  const _attachTargetBySession = new Map();
   // Authoritative session title learned from session lifecycle info.
   // Shared by every handler returned from this factory product.
   const _sessionTitleById = new Map();
@@ -1089,6 +1109,7 @@ export function createOpencodeFamilyPlugin(config) {
       _sessionDirectoryById.delete(sessionId);
       _sessionInstanceDirectoryById.delete(sessionId);
       _sessionTitleById.delete(sessionId);
+      _attachTargetBySession.delete(sessionId);
       _lastStatePerSession.delete(sessionId);
     }
 
@@ -1218,6 +1239,11 @@ export function createOpencodeFamilyPlugin(config) {
     if (cwd.directory) outbound.cwd = cwd.directory;
     else delete outbound.cwd;
     outbound.agent_pid = process.pid;
+    if (AGENT_ID === "opencode" && logTag.startsWith("STATE")) {
+      const attach = _attachTargetBySession.get(normalizeSessionId(outbound.session_id));
+      outbound.opencode_attach_url = !outbound.headless && attach && !attach.instance.disposed
+        ? attach.url : null;
+    }
     const payload = JSON.stringify(outbound);
     return {
       body: outbound,
@@ -2898,6 +2924,7 @@ export function createOpencodeFamilyPlugin(config) {
       : "";
     const instanceToken = registerInstanceDirectory(instanceDirectory);
     const contextInstance = {
+      attachUrl: resolveOpencodeServeAttachUrl(AGENT_ID, process.argv, ctx && ctx.serverUrl),
       client: instanceClient, instanceToken, directory: instanceDirectory,
       historyRequests: new Set(), lifecycleRevision: 0, disposed: false,
       hydrationTimer: null, hydrationDrainQueued: false,
@@ -2982,6 +3009,14 @@ export function createOpencodeFamilyPlugin(config) {
           }
           captureSessionDirectory(event);
           captureSessionInstanceDirectory(event, instanceDirectory);
+          if (AGENT_ID === "opencode" && sid) {
+            const key = normalizeSessionId(sid);
+            const directory = resolveSessionDirectory(key).directory;
+            if (normalizeDirectoryOwnershipKey(directory) === normalizeDirectoryOwnershipKey(instanceDirectory)
+              && normalizeDirectoryOwnershipKey(instanceDirectory)) {
+              _attachTargetBySession.set(key, { url: contextInstance.attachUrl, instance: contextInstance });
+            }
+          }
           captureSessionTitle(event);
 
           if (sid && !_rootSessionId) {
