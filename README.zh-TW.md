@@ -102,6 +102,8 @@ Claude Code 和 Codex CLI 第一次啟動就會接上；其他整合在 **設定
 
 內建 **Clawd**（像素螃蟹）、**Calico**（三花貓）和 **Cloudling**（雲寶）。**Hash Sage**（哈希仙人）和 **Whale-chan**（鯨魚娘）是可選官方主題，在 **設定 → 主題** 下載，那裡也可以匯入 Codex Pet 壓縮檔。想自己畫？執行 `npm run create-theme -- my-theme`，然後看 **[主題創作指南](docs/guides/guide-theme-creation.md)**。事件與動畫的對應：[狀態對應](docs/guides/state-mapping.md)。
 
+社群工具：[Live2Pet](https://github.com/receyuki/live2pet)（作者 @receyuki）可以把 Live2D 模型轉換成 Clawd 主題。
+
 ## 文件
 
 | 文件 | 內容 |

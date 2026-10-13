@@ -102,6 +102,8 @@ Claude Code and Codex CLI are set up on first launch; install any other integrat
 
 Clawd ships with **Clawd** (pixel crab), **Calico** (三花猫) and **Cloudling** (云宝). **Hash Sage** (哈希仙人) and **Whale-chan** (鲸鱼娘) are optional official themes in **Settings → Theme**, where you can also import a Codex Pet zip. To draw your own, run `npm run create-theme -- my-theme` and follow the **[theme creation guide](docs/guides/guide-theme-creation.md)**. Which event plays which animation: [state mapping](docs/guides/state-mapping.md).
 
+Community tool: [Live2Pet](https://github.com/receyuki/live2pet) by @receyuki turns Live2D models into Clawd themes.
+
 ## Guides
 
 | Guide | What it covers |
