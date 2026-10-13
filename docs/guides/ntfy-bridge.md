@@ -17,6 +17,14 @@ node scripts/ntfy-bridge.js --topic my-agents --agent-id custom-nova-ai-01234567
 
 Options: `--server <url>` (default `https://ntfy.sh`, also `NTFY_SERVER`), `--topic` (`NTFY_TOPIC`), `--agent-id` (`CLAWD_AGENT_ID`). For protected topics set `NTFY_TOKEN`; it is sent as a Bearer token and never logged.
 
+## Security
+
+**Anyone who can publish to the topic can drive the pet.** ntfy topics on a public server have no authentication by default; the topic name is the only secret.
+
+- Use an unguessable topic name, for example `clawd-$(openssl rand -hex 16)`, not `my-agents`.
+- Prefer an access-controlled topic (self-hosted ntfy, or ntfy.sh with a reserved topic) and set `NTFY_TOKEN` on the bridge so it can subscribe. Give senders a token with write-only access.
+- The bridge forwards state only, never permission decisions, so the worst a stranger can do is animate the pet.
+
 ## Sender side
 
 Publish with tags. The `clawd-<state>` tag is required; other messages on the topic are ignored.
@@ -32,6 +40,6 @@ curl -H "Tags: clawd-attention,clawd-session-build42,clawd-event-Stop" -d "done"
 | `clawd-session-<id>` | Optional. Groups events into one session (default: the topic name). |
 | `clawd-event-<Event>` | Optional. Overrides the default event name for that state. |
 
-`<id>` and `<Event>` accept only letters, digits, `.`, `_` and `-`. The message body is never forwarded to Clawd, so do not put secrets or prompts in tags. Anyone who can publish to the topic can drive the pet, so use a hard-to-guess topic or an access-controlled one.
+`<id>` and `<Event>` accept only letters, digits, `.`, `_` and `-`. The message body is never forwarded to Clawd, so do not put secrets or prompts in tags.
 
 The bridge reconnects with backoff and resumes from the last message id. If Clawd is not running, events are dropped rather than queued.
