@@ -325,10 +325,17 @@ function unregisterCommandCodeHooks(options = {}) {
     }
 
     if (next.length !== arr.length) {
-      settings.hooks[event] = next;
+      // Drop the event key entirely when Clawd's handlers were all it held, so
+      // uninstall does not leave `"SessionStart": []` behind in the user file.
+      if (next.length === 0) delete settings.hooks[event];
+      else settings.hooks[event] = next;
       changed = true;
     }
   }
+
+  // ...and the container itself when it is only Clawd residue. A `hooks` key
+  // holding anything but arrays (foreign shape) is left untouched.
+  if (changed && Object.keys(settings.hooks).length === 0) delete settings.hooks;
 
   let backupPath = null;
   if (changed) backupPath = writeJsonAtomicWithBackup(settingsPath, settings, options);

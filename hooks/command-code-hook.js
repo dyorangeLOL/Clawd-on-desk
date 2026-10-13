@@ -52,10 +52,19 @@ const MAX_SESSION_ID_LENGTH = 200;
 const MAX_CWD_LENGTH = 512;
 const MAX_TOOL_NAME_LENGTH = 128;
 
-// Safety timeout: guarantee valid JSON on stdout even if stdin never arrives
-// or the process-tree walk hangs. Command Code parses stdout on every exit
-// code, but a passive `{}` keeps the hook provably non-deciding.
+// Safety timeout: guarantee valid JSON on stdout even if stdin never arrives.
+// Command Code parses stdout on every exit code, but a passive `{}` keeps the
+// hook provably non-deciding. This guards ONLY the stdin wait — stdout is
+// answered before the process-tree walk, so the timer can never race the
+// resolver's own Windows snapshot budget (3s by default) and drop an event.
 const SAFETY_TIMEOUT_MS = 2000;
+// Once stdout has been answered, the guard above is re-armed as a backstop for
+// the pid walk + POST. The synchronous Windows snapshot alone may use 3s of the
+// shared resolver budget, and `timeout: 5` in settings.json is where Command
+// Code aborts the hook, so this has to sit between the two: long enough for a
+// slow walk plus the 150ms POST, short enough to reap a truly wedged process
+// before the host does.
+const POST_EXIT_BACKSTOP_MS = 4000;
 const POST_TIMEOUT_MS = 150;
 
 // Command Code has no distinct Windows image name (it runs under node.exe),
@@ -213,6 +222,9 @@ function sendHookEvent(payload, deps = {}) {
 // stdin, arm timers, write stdout, or exit.
 function main(deps = {}) {
   const readStdin = deps.readStdinJson || readStdinJson;
+  const exit = deps.exit || ((code) => process.exit(code));
+  const writeStdout = deps.writeStdout
+    || ((chunk, callback) => process.stdout.write(chunk, callback));
   let _wrote = false;
   let _exited = false;
   let safetyTimer = null;
@@ -228,31 +240,43 @@ function main(deps = {}) {
       return;
     }
     _wrote = true;
-    process.stdout.write(outLine, () => {
+    writeStdout(outLine, () => {
       if (done) done();
     });
+    // stdin has been answered, so the safety guard has done its job; re-arm it
+    // as the POST backstop. Without this the overdue 2s guard would fire right
+    // after a slow Windows snapshot and exit the process before the state POST
+    // left the socket — the session state would never reach Clawd.
+    if (!_exited && safetyTimer) {
+      clearTimeout(safetyTimer);
+      safetyTimer = setTimeout(() => finish(outLine), POST_EXIT_BACKSTOP_MS);
+    }
   }
 
   function finish(outLine) {
     if (_exited) return;
     _exited = true;
     if (safetyTimer) clearTimeout(safetyTimer);
-    writeStdoutOnce(outLine, () => process.exit(0));
+    writeStdoutOnce(outLine, () => exit(0));
   }
 
   safetyTimer = setTimeout(() => finish("{}\n"), SAFETY_TIMEOUT_MS);
 
   readStdin()
     .then((payload) => {
-      sendHookEvent(payload || {}, {
+      // Answer Command Code before the synchronous process-tree walk. The walk
+      // can take seconds on Windows and the CLI waits on our response, so it
+      // must never be able to turn a slow snapshot into a missing `{}`; the
+      // state POST continues afterwards under the re-armed backstop.
+      writeStdoutOnce("{}\n");
+      return sendHookEvent(payload || {}, {
         env: deps.env || process.env,
         postState: deps.postState || postStateToRunningServer,
         readHostPrefix: deps.readHostPrefix || readHostPrefix,
         resolvePid: deps.resolvePid || defaultResolvePid,
-      })
-        .then(() => finish("{}\n"))
-        .catch(() => finish("{}\n"));
+      });
     })
+    .then(() => finish("{}\n"))
     .catch(() => finish("{}\n"));
 }
 
@@ -265,6 +289,7 @@ module.exports = {
   HOOK_MAP,
   EVENT_TO_LIFECYCLE,
   SAFETY_TIMEOUT_MS,
+  POST_EXIT_BACKSTOP_MS,
   isCommandCodeAgentCommandLine,
   normalizeSessionId,
   buildStateBody,

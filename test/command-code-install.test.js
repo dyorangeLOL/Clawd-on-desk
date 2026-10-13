@@ -285,6 +285,22 @@ describe("Command Code hook installer", () => {
     }
   });
 
+  it("uninstall leaves no empty event arrays or an emptied hooks container behind", () => {
+    const settingsPath = makeTempSettingsFile({ permissions: { defaultMode: "default" } });
+    registerCommandCodeHooks({ silent: true, settingsPath, nodeBin: "/usr/local/bin/node", platform: "darwin" });
+    assert.ok(readJson(settingsPath).hooks.SessionStart, "precondition: install wrote the four events");
+
+    const result = unregisterCommandCodeHooks({ silent: true, settingsPath });
+    assert.strictEqual(result.removed, COMMAND_CODE_HOOK_EVENTS.length);
+    assert.strictEqual(result.changed, true);
+
+    const settings = readJson(settingsPath);
+    // Cosmetic residue reported on #1185: `"SessionStart": []` and friends must
+    // not survive the uninstall of a Clawd-only install.
+    assert.deepStrictEqual(Object.keys(settings), ["permissions"], JSON.stringify(settings));
+    assert.deepStrictEqual(settings.permissions, { defaultMode: "default" });
+  });
+
   it("backs up the complete pre-uninstall config once and exposes the backup path", () => {
     const settingsPath = makeTempSettingsFile({});
     registerCommandCodeHooks({ silent: true, settingsPath, nodeBin: "/usr/local/bin/node", platform: "darwin" });
