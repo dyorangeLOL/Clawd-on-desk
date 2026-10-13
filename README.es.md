@@ -1,125 +1,77 @@
 <p align="center">
   <img src="assets/icon.png" width="128" alt="Clawd">
 </p>
-<h1 align="center">Clawd on Desk</h1>
-<p align="center">
-  <a href="README.md">English</a>
-  ·
-  <a href="README.zh-CN.md">中文版</a>
-  ·
-  <a href="README.zh-TW.md">繁體中文</a>
-  ·
-  <a href="README.ko-KR.md">한국어</a>
-  ·
-  <a href="README.ja-JP.md">日本語</a>
-</p>
-<p align="center">
-  <sub>🌏 ¿No encuentras tu idioma? <a href="https://github.com/rullerzhou-afk/clawd-on-desk/pulls">Abre un PR</a> para añadirlo. Français, Deutsch y cualquier otro idioma son bienvenidos.</sub>
-</p>
-<p align="center">
-  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/releases"><img src="https://img.shields.io/github/v/release/rullerzhou-afk/clawd-on-desk" alt="Versión"></a>
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Plataforma">
-</p>
-<p align="center">
-  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/stargazers"><img src="https://img.shields.io/github/stars/rullerzhou-afk/clawd-on-desk?style=flat&logo=github&color=yellow" alt="Estrellas"></a>
-  <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge-flat.svg" alt="Mencionado en Awesome Claude Code"></a>
-</p>
+
+<div align="center">
+  <h1>Clawd on Desk</h1>
+  <p><b>Una mascota de escritorio pixelada que reacciona en tiempo real a tu agente de programación con IA.</b></p>
+  <p><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.zh-TW.md">繁體中文</a> · <a href="README.ko-KR.md">한국어</a> · <a href="README.ja-JP.md">日本語</a> · Español</p>
+  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/stargazers"><img src="https://img.shields.io/github/stars/rullerzhou-afk/clawd-on-desk?style=flat-square" alt="Stars"></a>
+  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/releases"><img src="https://img.shields.io/github/v/release/rullerzhou-afk/clawd-on-desk?label=version&style=flat-square" alt="Version"></a>
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License"></a>
+  <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge-flat.svg" alt="Mentioned in Awesome Claude Code"></a>
+</div>
 
 <p align="center">
   <img src="assets/hero.gif" alt="Clawd on Desk: una mascota de escritorio pixelada que reacciona en tiempo real a tu agente de programación con IA. La demostración animada muestra al cangrejo durmiendo, pensando mientras el modelo lee el código, escribiendo cuando se ejecutan herramientas, moviéndose con un subagente, haciendo malabares con varios subagentes, mostrando un globo de permisos y celebrando al completar 14 archivos y 312 pruebas. Funciona con Claude Code, Codex, Cursor, Copilot, Gemini, Antigravity, Qwen, CodeWhale, Pi, OMP, OpenClaw y más.">
 </p>
 
-Clawd vive en tu escritorio y reacciona en tiempo real a lo que hace tu agente de programación con IA. Inicia una tarea larga, aléjate y vuelve cuando el cangrejo te avise de que terminó.
-
-Piensa cuando envías un prompt, escribe cuando se ejecutan herramientas, se mueve o hace malabares con los subagentes, revisa permisos, celebra al terminar las tareas y duerme cuando te alejas. Incluye tres temas: **Clawd** (cangrejo pixelado), **Calico** (三花猫) y **Cloudling** (云宝), además de compatibilidad completa con temas personalizados y paquetes de animaciones Codex Pet importados. También puedes descargar los temas oficiales opcionales **Hash Sage** (哈希仙人) y **Whale-chan** (鲸鱼娘) desde Ajustes → Tema.
-
-> Compatible con Windows 11, macOS y Ubuntu/Linux. Las releases de Windows incluyen instaladores x64 y ARM64 separados. Las compilaciones desde el código fuente requieren Node.js. Funciona con **Claude Code**, **Codex CLI**, **Copilot CLI**, **Gemini CLI**, **Antigravity CLI (agy)**, **Cursor Agent**, **CodeBuddy**, **WorkBuddy**, **Grok Build**, **Kiro CLI**, **KiroCrew**, **Kimi Code CLI (Kimi-CLI)**, **Qwen Code**, **ZCode**, **CodeWhale**, **opencode**, **MiMo Code**, **Pi**, **OMP**, **OpenClaw**, **Hermes Agent**, **Qoder**, **QoderWork**, **QwenWork (千问办公)**, **Reasonix CLI**, **DeepSeek Harness**, **TraeCode (Trae CN)** y **MiniMax Code**.
+Lanza una tarea larga, aléjate y vuelve cuando el cangrejo te avise de que terminó. Clawd piensa mientras escribes el prompt, teclea mientras se ejecutan herramientas, hace malabares cuando se acumulan subagentes, muestra una tarjeta cuando una herramienta necesita tu aprobación y se duerme cuando te vas.
 
 ## Funciones
 
-### Compatibilidad con varios agentes
-- **Claude Code** — integración completa mediante hooks de comandos y hooks HTTP de permisos
-- **Codex CLI** — hooks oficiales con fallback JSONL (`~/.codex/sessions/`), sincronizados automáticamente de forma predeterminada y con globos de permisos reales
-- **Copilot CLI** — hooks de comandos opcionales mediante `~/.copilot/hooks/hooks.json` (instálalos desde Ajustes → Herramientas de IA para código; consulta la guía de Copilot para el fallback JSON manual)
-- **Gemini CLI** — hooks de comandos opcionales mediante `~/.gemini/settings.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:gemini-hooks`)
-- **Antigravity CLI (agy)** — hooks de comandos opcionales mediante `~/.gemini/config/hooks.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:antigravity-hooks`); **solo estado**: Clawd nunca muestra un globo de permisos para agy. Todas las decisiones Permitir / Denegar / Permitir siempre se toman en el menú de la terminal de agy
-- **Cursor Agent** — [hooks de Cursor IDE](https://cursor.com/docs/agent/hooks) opcionales en `~/.cursor/hooks.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:cursor-hooks`)
-- **CodeBuddy** — hooks de comandos compatibles con Claude Code y hooks HTTP de permisos opcionales mediante `~/.codebuddy/settings.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `node hooks/codebuddy-install.js`)
-- **Agentes HTTP personalizados** — registra otro ejecutable local en Ajustes y envía por POST eventos de ciclo de vida al endpoint dinámico `/state` de Clawd. El registro no instala hooks ni hace que una aplicación cualquiera informe automáticamente; v1 es solo estado y deja las decisiones de permisos en la interfaz de la propia aplicación. Consulta la [guía de agentes HTTP personalizados](docs/guides/custom-agent-http.md).
-- **WorkBuddy** — hooks de comandos compatibles con Claude Code opcionales mediante `~/.workbuddy-ai/settings.json` (actual) o `~/.workbuddy/settings.json` (antiguo; instálalos desde Ajustes → Herramientas de IA para código o ejecuta `node hooks/workbuddy-install.js`). Solo Estado + Notificación: la aplicación de escritorio resuelve los permisos en su propio sandbox y GUI nativos, por lo que Clawd no registra un hook de permisos.
-- **Grok Build** — hooks de comandos opcionales compatibles con Claude Code en `~/.grok/hooks/clawd-on-desk.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `node hooks/grok-install.js`). Solo sincroniza estado y notificaciones: Grok no tiene un hook `PermissionRequest` bloqueante, así que Permitir / Denegar se decide en la TUI de Grok.
-- **Kiro CLI** — hooks de comandos opcionales inyectados en configuraciones de agentes personalizadas dentro de `~/.kiro/agents/`, además de un agente `clawd` creado automáticamente que se vuelve a sincronizar desde el `kiro_default` integrado de Kiro después de instalar la integración. Así puedes activar los hooks con una variación mínima de comportamiento mediante `kiro-cli --agent clawd` o `/agent swap clawd`. Los hooks de estado están verificados en macOS y Windows.
-- **Kimi Code CLI (Kimi-CLI)** — hooks de comandos opcionales mediante `~/.kimi/config.toml` (entradas `[[hooks]]`; instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:kimi-hooks`)
-- **Qwen Code** — hooks de comandos opcionales mediante `~/.qwen/settings.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:qwen-hooks`); admite seguimiento de estado y globos de aprobación de escritorio para `PermissionRequest` de Qwen
-- **ZCode** — hooks opcionales de estado y `PermissionRequest` bloqueante mediante `~/.zcode/cli/config.json` → `hooks.events.*` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:zcode-hooks`); Clawd muestra globos manuales de Permitir/Denegar, mientras la automatización global y por sesión permanece aplazada. Clawd conserva los ajustes explícitos globales o por hook `enabled:false` y no se registra sobre un hook `PermissionRequest` de terceros
-- **CodeWhale** — hooks opcionales de ciclo de vida y solo estado mediante `~/.codewhale/config.toml` (entradas `[[hooks.hooks]]`; instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:codewhale-hooks`); la fase 1 solo controla las animaciones de inactividad, pensamiento, trabajo, sueño, error, atención y compactación, sin globos de permisos ni seguimiento de subagentes
-- **Reasonix CLI** — hooks de comandos opcionales y de solo estado mediante `<Reasonix home>/settings.json` (`~/.reasonix/settings.json` en macOS/Linux y `%APPDATA%\reasonix\settings.json` en Windows; instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:reasonix-hooks`); la fase 1 controla las animaciones de ciclo de vida, herramienta, notificación, compactación y detención de subagentes, mientras las decisiones de permisos permanecen en el flujo de terminal de Reasonix
-- **opencode** — [integración mediante plugin](https://opencode.ai/docs/plugins) opcional a través del archivo efectivo dentro de `~/.config/opencode/` (`config.json` → `opencode.json` → `opencode.jsonc`; gana el último) (instálala desde Ajustes → Herramientas de IA para código o ejecuta `node hooks/opencode-install.js`); transmisión de eventos sin latencia y globos de permisos con Permitir/Siempre/Denegar. Las sesiones hijas creadas por la herramienta `task` no tienen interfaz y no participan en las animaciones visibles de varias sesiones
-- **MiMo Code** — [integración mediante plugin](https://opencode.ai/docs/plugins) opcional a través del archivo efectivo dentro de `~/.config/mimocode/` (`config.json` → `mimocode.json` → `mimocode.jsonc` predeterminado; gana el último; instálala desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:mimocode-plugin`); comparte el SDK `@mimo-ai/plugin` y el comportamiento de permisos de opencode. Sus sesiones hijas de `task` tampoco tienen interfaz
-- **Pi** — extensión global opcional en `~/.pi/agent/extensions/clawd-on-desk` (instálala desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:pi-extension`); actualizaciones de ciclo de vida interactivo y actividad de herramientas de solo estado, conservando el comportamiento YOLO predeterminado de Pi
-- **OMP (oh-my-pi)** — extension global opcional en `~/.omp/agent/extensions/clawd-on-desk` (instálala desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:omp-extension`); solo informa del estado de sesiones interactivas y herramientas. `session_stop` registra un candidato de finalización y el `agent_end` terminal lo confirma solo cuando ninguna extension pide continuar. Si existe el bridge comunitario `clawd-on-desk-omp.ts`, Clawd lo conserva y omite su instalación
-- **OpenClaw** — integración opcional mediante plugin y de solo estado a través de `~/.openclaw/openclaw.json` (instálala desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:openclaw-plugin`; OpenClaw también necesita una configuración inicializada); las sesiones locales `openclaw tui --local` controlan las animaciones de Clawd, sin globos de permisos ni enfoque de terminal en la fase 1
-- **Hermes Agent** — [integración mediante plugin](https://hermes-agent.org/) opcional en el directorio de plugins administrado por Hermes (instálala desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:hermes-plugin`); admite estado, sesiones, SessionEnd, enfoque de terminal y los globos de permisos compatibles
-- **Qoder** — hooks de comandos opcionales y de solo estado mediante `~/.qoder/settings.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:qoder-hooks`); la fase 1 solo controla las animaciones de Clawd: las solicitudes de permisos de Qoder se observan como notificaciones y todas las decisiones Permitir / Denegar permanecen en el flujo propio de Qoder
-- **QoderWork** — hooks de comandos opcionales y de solo estado mediante `~/.qoderwork/settings.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:qoderwork-hooks`); la fase 1 controla las animaciones de Clawd y el HUD de sesiones. Los eventos de permisos de QoderWork se observan en silencio como parte del flujo de trabajo y todas las decisiones Permitir / Denegar permanecen en el flujo propio de QoderWork
-- **QwenWork (千问办公)** — hooks de comandos opcionales, solo mediante hooks y de solo estado, a través de `~/.QwenWorkCN/settings.json` (instálalos desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:qwenwork-hooks`; desinstálalos con `npm run uninstall:qwenwork-hooks`); solo para escritorio macOS y Windows. [qwenwork.cn/download](https://qwenwork.cn/download) no ofrece cliente Linux, por lo que no existe emparejamiento WSL. La fase 1 controla las animaciones de Clawd y el HUD de sesiones; `PermissionRequest` / `PermissionDenied` solo se observan y se asignan a `working`, stdout del hook siempre es `{}` y Clawd nunca produce Permitir / Denegar: el flujo de permisos nativo de QwenWork sigue siendo el único que decide. No hay recuperación al inicio: que el proceso de escritorio siga abierto no significa que haya un turno en curso
-- **DeepSeek Harness** — integración experimental para el perfil web de DSH y la app de escritorio DeepSeek Harness (macOS / Windows) mediante un plugin DSH administrado por Clawd dentro del proceso. Los eventos públicos de sesión controlan el estado de Clawd con orden por sesión, y las llamadas públicas bloqueantes `approval/request` pueden mostrar un globo Permitir una vez / Denegar; una ausencia de decisión siempre vuelve al propio flujo de aprobación de DSH (el respondedor web o el cuadro de aprobación nativo de la app de escritorio). `ask_user_question` permanece completamente nativo de DSH y Clawd nunca lee el almacenamiento de proyección de DSH. Consulta la [guía de DeepSeek Harness](docs/guides/dsh-setup.md)
-- **TraeCode (Trae CN)** — integración experimental de hooks solo de estado mediante `~/.trae-cn/hooks.json` (instálala desde Ajustes → Herramientas de IA para código o ejecuta `npm run install:traecode-hooks`; desinstálala con `npm run uninstall:traecode-hooks`). Activa los hooks manualmente en Trae (**Settings → Hooks → Enable**, modo de ejecución **Sandbox**; consulta la [guía oficial de hooks de Trae](https://docs.trae.cn/ide/automate-actions-with-hooks)). Esta versión solo cubre Trae CN. Clawd deriva el título de la primera pregunta y no decide permisos; como no hay `SessionEnd`, las conversaciones cerradas se retiran por el tiempo de inactividad del escritorio.
-- **MiniMax Code** — integración experimental de solo estado mediante un plugin local de Clawd en `~/.minimax/plugins/clawd-state/` (Ajustes → Herramientas de IA para código o `npm run install:minimax-hooks`; desinstala con `npm run uninstall:minimax-hooks`; respeta `MINIMAX_DATA_DIR` / `MAVIS_DATA_DIR`). Cubre mcode CLI y la aplicación de escritorio con 10 eventos, incluido `SessionEnd`. El límite de 1–10 segundos por handler impide la aprobación humana bloqueante: no registra `PermissionRequest`, stdout siempre devuelve `{}` y los permisos quedan en MiniMax. Si no se carga, usa `mcode plugin enable clawd-state@local` o el panel de plugins; el título conserva la primera línea del primer prompt
-- **Convivencia de varios agentes** — ejecuta todos los agentes al mismo tiempo; Clawd sigue cada sesión de forma independiente
+- **Estado en vivo**: 12 estados animados impulsados por hooks y logs del agente, con seguimiento de la mirada, secuencia de sueño, reacciones al clic y un modo mini que asoma desde el borde de la pantalla
+- **Funciona con tus herramientas**: Claude Code, Codex, Copilot, Gemini, Cursor, opencode, Kiro, Qwen y más de 20 más, con cada sesión seguida en paralelo
+- **Globos de permisos**: permite o deniega solicitudes desde una tarjeta flotante o un atajo global, o cambia a aprobación automática
+- **Sesiones de un vistazo**: un HUD junto a la mascota, un panel con cada sesión activa y salto directo a su terminal, anillos de cuota y un resumen privado local
+- **Lejos del escritorio**: aprueba desde Telegram o Feishu/Lark, recibe notificaciones en Slack o sigue tus sesiones en el móvil con la PWA de solo lectura
+- **A tu manera**: Clawd, Calico y Cloudling incluidos, temas oficiales para descargar, importación de Codex Pet o un tema propio
+- **Donde programes**: Windows (x64 y ARM64), macOS y Linux, además de Remote SSH y WSL, con la interfaz en 7 idiomas
 
-### Animaciones e interacción
-- **Estado en tiempo real** — los hooks de los agentes y el sondeo de logs controlan automáticamente las animaciones de Clawd
-- **12 estados animados** — inactivo, pensando, escribiendo, construyendo, movimiento de subagente, malabares con varios subagentes, error, feliz, notificación, compactación, transporte y sueño
-- **Importación de Codex Pet** — importa paquetes zip de Codex Pet desde `Ajustes…` → `Tema`; Clawd adapta las animaciones de su atlas a temas administrados
-- **Seguimiento ocular** — Clawd sigue el cursor mientras está inactivo, inclinando el cuerpo y estirando la sombra
-- **Secuencia de sueño** — bosteza, cabecea, se desploma y se duerme tras 60 segundos de inactividad; mover el mouse activa una animación de despertar sobresaltado
-- **Reacciones a clics** — doble clic para darle un toque y 4 clics para que se agite
-- **Arrastre desde cualquier estado** — agarra a Clawd cuando quieras (Pointer Capture evita que se suelte al moverlo rápido) y suéltalo para continuar
-- **Modo mini** — arrástralo al borde derecho o haz clic derecho en «Modo mini»; Clawd se esconde en el borde, asoma al pasar el cursor, muestra alertas y celebraciones mini y usa transiciones de salto parabólicas
+Todas las funciones en detalle: **[docs/guides/features.es.md](docs/guides/features.es.md)**
 
-### Globo de permisos
-- **Revisión de permisos en la aplicación** — cuando una integración con permisos envía una solicitud compatible, Clawd puede mostrar una tarjeta flotante en lugar de esperar en la terminal; los agentes de solo estado conservan su flujo de permisos nativo
-- **Permitir / denegar / acciones propias del agente** — aprueba o rechaza con un clic, además de usar reglas de permisos o acciones `Always` cuando el agente de origen las admite
-- **Modos de gestión de permisos** — elige **Preguntar siempre**, **Solo preguntas** con confirmación (solicitudes con forma de herramienta de agentes explícitamente compatibles) o **Aprobar automáticamente**. La aprobación automática gestiona cualquier solicitud que el adaptador marque como apta para automatización —incluidos nombres de solicitudes no vacíos y no reconocidos de Claude/Qwen—, pero los nombres ausentes, las formas de decisión no compatibles y las preguntas o planes de CodeBuddy vuelven al flujo nativo. El modo se rebaja tras reiniciar, y cada sesión activa apta puede elegir de forma independiente Preguntar siempre o solo herramientas. Consulta la [guía de configuración](docs/guides/setup-guide.md#permission-handling-automation)
-- **Aprobación remota opcional** — Telegram y Feishu/Lark pueden reflejar solicitudes pendientes aptas mientras el globo local sigue disponible. Un fallo del canal no produce ninguna decisión remota ni una denegación: la solicitud de escritorio permanece pendiente, y las solicitudes solo remotas vuelven al agente únicamente después de que todos los clientes disponibles regresen sin decisión
-- **Atajos globales** — `Ctrl+Shift+Y` permite y `Ctrl+Shift+N` deniega el globo de permisos más reciente (solo se registran mientras hay globos visibles)
-- **Diseño apilado** — varias solicitudes de permisos se apilan hacia arriba desde la esquina inferior derecha
-- **Cierre automático** — si respondes primero en la terminal, el globo desaparece automáticamente
-- **Interruptor por agente** — abre `Ajustes…` → `Herramientas de IA para código`, elige un agente y desactiva `Mostrar globos emergentes` para conservar las solicitudes en la terminal/TUI del propio agente
+## Inicio rápido
 
-### Notificaciones remotas
-- **Telegram / Feishu (Lark)** — aprobación remota interactiva: envía solicitudes de permisos al teléfono y permite aprobarlas o denegarlas sin tocar el escritorio
-- **Slack** — **solo notificaciones**: envía tareas **terminadas**, **errores** y **solicitudes de permisos** mediante un Incoming Webhook de Slack (o, de forma opcional, un token de bot `xoxb-` y un id. de canal) como tarjetas Block Kit. Slack no puede aprobar ni denegar en esta versión: los mensajes de permisos son avisos y la decisión se toma en la aplicación de escritorio. Configúralo junto a Telegram/Feishu en los canales de aprobación remota. Los secretos se guardan localmente en un archivo de entorno fuera de las preferencias (`0600` en macOS/Linux; en Windows se usa la ACL de AppData), y el canal se degrada de forma segura si no está configurado o no tiene conexión. Los mensajes pueden incluir el título de la sesión, la carpeta y el nombre del equipo, por lo que se recomienda un **canal privado**. Consulta [slack-notifications.md](docs/guides/slack-notifications.md)
+Descarga el instalador más reciente desde **[GitHub Releases](https://github.com/rullerzhou-afk/clawd-on-desk/releases/latest)**:
 
-### Información de sesiones
-- **Seguimiento de varias sesiones** — las sesiones de todos los agentes se resuelven al estado de mayor prioridad
-- **Detección de subagentes** — movimiento con auriculares para 1 subagente y malabares con tres pelotas para 2 o más
-- **Panel de sesiones + HUD** — haz clic derecho o usa la bandeja → `Abrir panel` para revisar sesiones activas, eventos recientes y alias, y saltar a una terminal; un HUD compacto junto a Clawd mantiene visibles las sesiones activas
-- **Cuota de suscripción de un vistazo** — los anillos Orbit opcionales junto a la mascota y las barras detalladas del panel muestran las ventanas de cuota informadas por los agentes compatibles. La recopilación local de Claude está desactivada de forma predeterminada y usa el [payload oficial `rate_limits` de la statusline](https://code.claude.com/docs/en/statusline) de Claude Code; no realiza ninguna solicitud adicional a Anthropic. Consulta las [notas sobre flujo de datos y propiedad](docs/guides/setup-guide.md#claude-code-subscription-quota-official-status-line-not-scraping).
-- **Enfoque de terminal** — las acciones del panel/HUD saltan a la ventana de terminal de una sesión concreta; los estados de notificación o atención enfocan automáticamente la terminal correspondiente
-- **Detección de procesos activos** — detecta los procesos compatibles que terminaron o fallaron y limpia las sesiones huérfanas
-- **Recuperación al inicio** — si Clawd se reinicia mientras sigue ejecutándose algún agente compatible, permanece despierto en lugar de dormirse
+| Plataforma | Descarga |
+|---|---|
+| Windows | `Clawd-on-Desk-Setup-<version>-x64.exe` o `-arm64.exe` |
+| macOS | `.dmg`, o `brew install --cask clawd-on-desk` |
+| Linux | `.AppImage` o `.deb` (Homebrew también funciona en x86_64) |
 
-### Aplicación móvil complementaria (PWA)
-- **Espejo en vivo en tu teléfono** — activa `Ajustes…` → `Móvil / PWA` y abre en el teléfono la URL de emparejamiento; la aplicación web Clawd Mobile muestra en tiempo real las sesiones de tus agentes y sus estados
-- **Solo lectura por diseño** — el puente LAN solo transmite el estado; nada de la PWA puede modificar tu equipo (la aprobación desde la PWA LAN está en la hoja de ruta; Telegram y Feishu/Lark son canales compatibles independientes)
-- **Solo LAN y protegido por token** — el emparejamiento requiere un token, los tokens rotan automáticamente con un periodo de gracia y el acceso puede regenerarse o restablecerse con un clic
-- **Instalable** — es una PWA: añádela a la pantalla de inicio para usarla como una aplicación
-> La línea de la aplicación móvil complementaria —desde el primer prototipo hasta la rotación de tokens— está construida y liderada por el colaborador principal [@Bynlk](https://github.com/Bynlk), que también mantiene [clawd-on-mobile](https://github.com/Bynlk/clawd-on-mobile), un fork hermano con una aplicación Android nativa.
+Abre Clawd y empieza a reaccionar de inmediato: Claude Code y Codex se conectan en el primer arranque. Cualquier otro agente se instala con un clic en **Ajustes → Herramientas de IA para código**.
 
-### Sistema
-- **Clic transparente** — las áreas transparentes pasan los clics a las ventanas inferiores; solo el cuerpo de Clawd es interactivo
-- **Memoria de posición** — Clawd recuerda dónde lo dejaste después de reiniciar (incluido el modo mini)
-- **Bloqueo de instancia única** — evita ventanas duplicadas de Clawd
-- **Inicio automático** — el hook SessionStart de Claude Code puede iniciar Clawd automáticamente si no está en ejecución
-- **No molestar** — haz clic derecho o usa la bandeja para entrar en modo de sueño; todos los eventos de hooks quedan silenciados hasta que despiertes a Clawd. Los globos de permisos se suprimen durante No molestar: Codex, opencode y MiMo Code vuelven a sus solicitudes nativas, mientras Claude Code y CodeBuddy vuelven a su flujo de permisos integrado. WorkBuddy usa solo Estado + Notificación; Antigravity y Pi son integraciones de solo estado.
-- **Efectos de sonido** — avisos de audio breves al terminar tareas y recibir solicitudes de permisos (se activan desde la bandeja o Ajustes; espera de 10 s y silencio automático durante No molestar)
-- **Bandeja del sistema** — modo No molestar, inicio automático y búsqueda de actualizaciones
-- **i18n** — interfaz en inglés, chino simplificado, chino tradicional, coreano, japonés, portugués de Brasil y español; cambia el idioma en Ajustes → General
-- **Actualización automática** — busca releases de GitHub; Windows instala actualizaciones NSIS al salir y macOS/Linux ejecutan `git pull` + reinicio cuando se usa un repositorio clonado
+<details>
+<summary><strong>Ejecutar desde el código fuente</strong></summary>
+<br/>
 
-## Animaciones
+Solo hace falta para contribuir, probar código sin publicar o depurar integraciones. La instalación desde el código descarga Electron y herramientas de compilación, así que `node_modules` ocupa bastante.
+
+```bash
+# Clona el repositorio
+git clone https://github.com/rullerzhou-afk/clawd-on-desk.git
+cd clawd-on-desk
+
+# Instala las dependencias
+npm install
+
+# Inicia Clawd (registra automáticamente los hooks de Claude Code y Codex)
+npm start
+```
+
+Requisitos, Remote SSH, WSL y notas para macOS / Linux: **[guía de configuración](docs/guides/setup-guide.md)**
+
+</details>
+
+## Agentes compatibles
+
+> **Claude Code** · **Codex CLI** · **Copilot CLI** · **Gemini CLI** · **Antigravity CLI (agy)** · **Cursor Agent** · **CodeBuddy** · **WorkBuddy** · **Grok Build** · **Kiro CLI** · **KiroCrew** · **Kimi Code CLI (Kimi-CLI)** · **Qwen Code** · **ZCode** · **CodeWhale** · **opencode** · **MiMo Code** · **Pi** · **OMP** · **OpenClaw** · **Hermes Agent** · **Qoder** · **QoderWork** · **QwenWork (千问办公)** · **Reasonix CLI** · **DeepSeek Harness** · **TraeCode (Trae CN)** · **MiniMax Code**
+
+Claude Code y Codex CLI se configuran en el primer arranque; instala cualquier otra integración desde **Ajustes → Herramientas de IA para código** y Clawd la mantiene sincronizada. Otras herramientas locales pueden informar a través del endpoint de [agentes HTTP personalizados](docs/guides/custom-agent-http.md). Los detalles de cada agente están en **[agentes compatibles](docs/guides/supported-agents.es.md)**, y las diferencias, como agentes sin globo de permisos, en **[limitaciones conocidas](docs/guides/known-limitations.md)**.
+
+## Temas
 
 <table>
   <tr>
@@ -148,90 +100,22 @@ Piensa cuando envías un prompt, escribe cuando se ejecutan herramientas, se mue
   </tr>
 </table>
 
-Asignación completa de eventos a estados, modo mini y reacciones a clics: **[docs/guides/state-mapping.md](docs/guides/state-mapping.md)**
+Clawd incluye **Clawd** (cangrejo pixelado), **Calico** (三花猫) y **Cloudling** (云宝). **Hash Sage** (哈希仙人) y **Whale-chan** (鲸鱼娘) son temas oficiales opcionales en **Ajustes → Tema**, donde también puedes importar un zip de Codex Pet. Para dibujar el tuyo, ejecuta `npm run create-theme -- my-theme` y sigue la **[guía de creación de temas](docs/guides/guide-theme-creation.md)**. Qué evento reproduce cada animación: [mapa de estados](docs/guides/state-mapping.md).
 
-## Varias pantallas
+## Guías
 
-Clawd se adapta a configuraciones con varios monitores: el tamaño proporcional usa la pantalla donde se inicia Clawd, los monitores verticales reciben un aumento limitado para que la mascota siga viéndose bien en pantallas altas y estrechas, y puedes arrastrar a Clawd entre pantallas.
-
-<p align="center"><sub>¿Quieres ver el comportamiento real con varios monitores? <a href="assets/videos/clawd-multi-monitor-demo.mp4">Mira el video de demostración de este repositorio</a>.</sub></p>
-
-## Inicio rápido
-
-Para un uso normal, descarga el instalador precompilado más reciente desde **[GitHub Releases](https://github.com/rullerzhou-afk/clawd-on-desk/releases/latest)**:
-
-- **Windows**: `Clawd-on-Desk-Setup-<version>-x64.exe` o `Clawd-on-Desk-Setup-<version>-arm64.exe`
-- **macOS**: `.dmg`
-- **Linux**: `.AppImage` o `.deb`
-
-En macOS, o en Linux x86_64, también puedes instalarlo con Homebrew:
-
-```bash
-brew install --cask clawd-on-desk
-```
-
-Inicia Clawd después de instalarlo. Las instalaciones nuevas solo sincronizan automáticamente Claude Code y Codex; instala las demás integraciones locales desde **Ajustes → Herramientas de IA para código** cuando las necesites.
-
-Ejecuta desde el código fuente únicamente si vas a contribuir, probar código aún no publicado o depurar integraciones. Las instalaciones desde el código fuente descargan Electron y herramientas de compilación, y pueden crear un árbol `node_modules` grande.
-
-```bash
-# Clona el repositorio
-git clone https://github.com/rullerzhou-afk/clawd-on-desk.git
-cd clawd-on-desk
-
-# Instala las dependencias
-npm install
-
-# Inicia Clawd (registra automáticamente los hooks de Claude Code y Codex)
-npm start
-```
-
-**Claude Code** y **Codex CLI** funcionan directamente con hooks registrados automáticamente. Para **Copilot CLI**, **Gemini CLI**, **Antigravity CLI (agy)**, **Cursor Agent**, **CodeBuddy**, **WorkBuddy**, **Kiro CLI**, **KiroCrew**, **Kimi Code CLI (Kimi-CLI)**, **Qwen Code**, **ZCode**, **CodeWhale**, **opencode**, **MiMo Code**, **Pi**, **OMP**, **OpenClaw**, **Hermes Agent**, **Qoder**, **QoderWork**, **QwenWork (千问办公)**, **Reasonix CLI**, **DeepSeek Harness**, **TraeCode (Trae CN)** y **MiniMax Code**, instala primero la integración desde **Ajustes → Herramientas de IA para código**; Clawd la mantendrá sincronizada mientras siga activada. También incluye SSH remoto, WSL y notas específicas de cada plataforma (macOS / Linux): **[docs/guides/setup-guide.md](docs/guides/setup-guide.md)**
-
-¿Quieres ejecutar Claude Code / Codex CLI en un servidor remoto y mostrar el estado y los globos de permisos en tu Clawd local? Usa **Ajustes → Hosts SSH → Desplegar / Reparar hooks** dentro de la aplicación. Guía completa, límite de aislamiento en servidores compartidos, alcance de Doctor y preguntas frecuentes: **[docs/guides/guide-remote-ssh.md](docs/guides/guide-remote-ssh.md)**
-
-Para consultar el estado oficial de `Codex + WSL`, el alcance actual de Clawd y por qué es fácil interpretarlo mal, consulta: **[docs/guides/codex-wsl-clarification.md](docs/guides/codex-wsl-clarification.md)**
-
-## Limitaciones conocidas
-
-Algunos agentes tienen funciones incompletas (sin globo de permisos, latencia de sondeo o sin enfoque de terminal). Consulta la tabla completa: **[docs/guides/known-limitations.md](docs/guides/known-limitations.md)**
-
-## Temas personalizados
-
-Clawd admite temas personalizados: sustituye el cangrejo predeterminado por tu propio personaje y animaciones. Si ya tienes un paquete Codex Pet, importa su zip desde `Ajustes…` → `Tema` → `Importar zip de mascota`; Clawd convierte automáticamente el atlas en un tema administrado.
-
-**Inicio rápido:**
-1. Crea la estructura de un tema:
-   ```bash
-   node scripts/create-theme.js my-theme
-   # o
-   npm run create-theme -- my-theme
-   ```
-   También funciona sin argumentos: crea la siguiente estructura `my-theme` disponible en tu directorio de temas de usuario.
-2. Edita `theme.json` y crea tus recursos (SVG, GIF, APNG, WebP, PNG, JPG o JPEG)
-3. Reinicia Clawd o abre `Ajustes…` → `Tema` → selecciona tu tema
-
-**Tema mínimo viable:** 1 SVG (inactividad con seguimiento ocular) + 7 archivos GIF/APNG (pensando, trabajando, error, feliz, notificación, durmiendo y despertando). Puedes desactivar el seguimiento ocular para usar cualquier formato en todos los estados.
-
-Valida tu tema antes de distribuirlo:
-```bash
-node scripts/validate-theme.js path/to/your-theme
-```
-
-Las tarjetas de temas en `Ajustes…` → `Tema` muestran insignias de capacidades como `Inactividad con seguimiento`, `Tema estático`, `Mini`, `Sueño directo` y `Sin reacciones`, para que los usuarios sepan qué admite cada tema antes de cambiar.
-
-Consulta [docs/guides/guide-theme-creation.md](docs/guides/guide-theme-creation.md) para ver la guía completa de creación con rutas por niveles (principiante → avanzado), referencia de campos de `theme.json` y pautas para los recursos.
-
-> Los archivos SVG de terceros se sanitizan automáticamente por seguridad.
-
-### Hoja de ruta
-
-Algunas ideas que nos gustaría explorar en el futuro:
-
-- Enfoque de la terminal de Codex mediante búsqueda en el árbol de procesos a partir del PID de `codex.exe`
-- Registro de temas y descarga dentro de la aplicación
-- Script de desinstalación de hooks para eliminar la aplicación limpiamente
-- Aplicación móvil PWA por LAN: aprobación de permisos desde el navegador (en desarrollo, liderada por [@Bynlk](https://github.com/Bynlk)); Telegram y Feishu/Lark son canales de aprobación compatibles independientes
+| Guía | Contenido |
+|---|---|
+| [Funciones](docs/guides/features.es.md) | Todas las funciones en detalle |
+| [Guía de configuración](docs/guides/setup-guide.md) | Compilación desde el código, agentes y notas para Windows / macOS / Linux |
+| [Gestión de permisos](docs/guides/setup-guide.md#permission-handling-automation) | Preguntar siempre, solo preguntas o aprobación automática |
+| [Remote SSH](docs/guides/guide-remote-ssh.md) | Estado y globos de permisos de agentes en un servidor remoto |
+| [Codex + WSL](docs/guides/codex-wsl-clarification.md) | Qué admite Clawd para Codex dentro de WSL |
+| [Aprobación remota](docs/guides/telegram-approval.md) | Telegram, más [Feishu / Lark](docs/guides/feishu-lark-remote-approval.md) y [notificaciones de Slack](docs/guides/slack-notifications.md) |
+| [Resumen](docs/guides/recap.md) | Revisión privada y local de la actividad |
+| [Agentes HTTP personalizados](docs/guides/custom-agent-http.md) | Conecta una herramienta que Clawd aún no integra |
+| [Limitaciones conocidas](docs/guides/known-limitations.md) | Diferencias de funciones por agente |
+| [Creación de temas](docs/guides/guide-theme-creation.md) | Crea y valida tu propio tema |
 
 ## Contribuir
 

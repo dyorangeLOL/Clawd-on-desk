@@ -1,121 +1,77 @@
 <p align="center">
   <img src="assets/icon.png" width="128" alt="Clawd">
 </p>
-<h1 align="center">Clawd on Desk</h1>
-<p align="center">
-  <a href="README.md">English</a>
-  ·
-  <a href="README.zh-CN.md">中文版</a>
-  ·
-  <a href="README.zh-TW.md">繁體中文</a>
-  ·
-  <a href="README.ko-KR.md">한국어</a>
-  ·
-  <a href="README.ja-JP.md">日本語</a>
-  ·
-  <a href="README.es.md">Español</a>
-</p>
-<p align="center">
-  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/releases"><img src="https://img.shields.io/github/v/release/rullerzhou-afk/clawd-on-desk" alt="Version"></a>
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platform">
-</p>
-<p align="center">
-  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/stargazers"><img src="https://img.shields.io/github/stars/rullerzhou-afk/clawd-on-desk?style=flat&logo=github&color=yellow" alt="Stars"></a>
+
+<div align="center">
+  <h1>Clawd on Desk</h1>
+  <p><b>AI コーディングエージェントの状態にリアルタイムで反応する、ピクセルのデスクトップペット。</b></p>
+  <p><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.zh-TW.md">繁體中文</a> · <a href="README.ko-KR.md">한국어</a> · 日本語 · <a href="README.es.md">Español</a></p>
+  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/stargazers"><img src="https://img.shields.io/github/stars/rullerzhou-afk/clawd-on-desk?style=flat-square" alt="Stars"></a>
+  <a href="https://github.com/rullerzhou-afk/clawd-on-desk/releases"><img src="https://img.shields.io/github/v/release/rullerzhou-afk/clawd-on-desk?label=version&style=flat-square" alt="Version"></a>
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License"></a>
   <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge-flat.svg" alt="Mentioned in Awesome Claude Code"></a>
-</p>
+</div>
 
 <p align="center">
   <img src="assets/hero.gif" alt="Clawd on Desk のアニメーションデモ。AI コーディングエージェントの状態に合わせて、ピクセルのカニが睡眠、思考、ツール実行中のタイピング、サブエージェント 1 個ではヘッドホングルーヴ、複数では3ボールジャグリング、権限リクエストの通知、タスク完了後のお祝いへリアルタイムに切り替わります。Claude Code、Codex、Cursor、Copilot、Gemini、Antigravity、Qwen、Pi、OMP、OpenClaw などに対応しています。">
 </p>
 
-Clawd はデスクトップに住むペットで、AI コーディングエージェントが今何をしているかにリアルタイムで反応します。長いタスクを開始したら席を外し、Clawd が完了を知らせたら戻ってくるだけです。
-
-プロンプトを入力すると考え、ツールが動くとタイピングし、サブエージェントが動くとヘッドホングルーヴや3ボールジャグリングになり、権限確認ではカードを表示し、タスク完了時には喜び、離席中は眠ります。組み込みテーマとして **Clawd**（ピクセルのカニ）、**Calico**（三毛猫）、**Cloudling**（云宝）を同梱し、カスタムテーマと Codex Pet アニメーションパックのインポートにも対応しています。設定 → テーマからオプションの公式テーマ **Hash Sage**（哈希仙人）と **Whale-chan**（鲸鱼娘）をダウンロードできます。
-
-> Windows 11、macOS、Ubuntu/Linux に対応しています。Windows リリースでは x64 と ARM64 のインストーラーを個別に提供します。ソースから実行するには Node.js が必要です。**Claude Code**、**Codex CLI**、**Copilot CLI**、**Gemini CLI**、**Antigravity CLI (agy)**、**Cursor Agent**、**CodeBuddy**、**WorkBuddy**、**Grok Build**、**Kiro CLI**、**KiroCrew**、**Kimi Code CLI (Kimi-CLI)**、**Qwen Code**、**ZCode**、**CodeWhale**、**opencode**、**MiMo Code**、**Pi**、**OMP**、**OpenClaw**、**Hermes Agent**、**Qoder**、**QoderWork**、**QwenWork（千问办公）**、**Reasonix CLI**、**DeepSeek Harness**、**TraeCode (Trae CN)**、**MiniMax Code** と連携します。
+長いタスクを始めたら席を外し、カニが完了を知らせたら戻るだけ。プロンプトを送ると考え、ツールが動くとタイピングし、サブエージェントが増えるとジャグリングし、承認が必要ならカードを出し、離席すると眠ります。
 
 ## 機能
 
-### マルチエージェント対応
-- **Claude Code** — command hook と HTTP permission hook による完全統合
-- **Codex CLI** — official hooks を主経路にし、JSONL フォールバック（`~/.codex/sessions/`）も利用。自動登録され、実際の権限バブルに対応
-- **Copilot CLI** — `~/.copilot/hooks/hooks.json` の command hook に対応
-- **Gemini CLI** — `~/.gemini/settings.json` の command hook に対応（Clawd 起動時に自動登録、または `npm run install:gemini-hooks`）
-- **Antigravity CLI (agy)** — `~/.gemini/config/hooks.json` の command hook に対応（Antigravity config がある場合は Clawd 起動時に自動登録、または `npm run install:antigravity-hooks`）。**state-only** のため、Clawd は agy の権限バブルを表示しません。Allow / Deny / Always-allow は agy 自身のターミナルメニューで選択します
-- **Cursor Agent** — `~/.cursor/hooks.json` の [Cursor IDE hooks](https://cursor.com/docs/agent/hooks) に対応（Clawd 起動時に自動登録、または `npm run install:cursor-hooks`）
-- **CodeBuddy** — `~/.codebuddy/settings.json` 経由で Claude Code 互換の command hook と HTTP permission hook に対応（Clawd 起動時に自動登録、または `node hooks/codebuddy-install.js`）
-- **カスタム HTTP Agent** — Settings で別のローカルアプリを登録し、アプリまたは adapter から Clawd の動的 `/state` エンドポイントへイベントを送信します。登録だけでは hook はインストールされず、v1 は state-only です。詳細は[カスタム HTTP Agent ガイド](docs/guides/custom-agent-http.md)を参照してください
-- **WorkBuddy** — `~/.workbuddy-ai/settings.json`（現行）または `~/.workbuddy/settings.json`（旧版）の Claude Code 互換 command hook に対応（Settings → AI コーディングツール からインストール、または `node hooks/workbuddy-install.js`）。状態と Notification のみを同期し、権限判断は WorkBuddy のネイティブ GUI に残ります
-- **Grok Build** — `~/.grok/hooks/clawd-on-desk.json` に登録する任意の Claude Code 互換 command hook です（Settings → AI コーディングツール からインストール、または `node hooks/grok-install.js`）。状態と通知のみを同期します。Grok には blocking `PermissionRequest` hook がないため、Allow / Deny は Grok TUI で処理します。
-- **Kiro CLI** — `~/.kiro/agents/` 配下のカスタムエージェント設定に command hook を注入。Clawd 起動時には Kiro 組み込みの `kiro_default` から再同期される `clawd` エージェントも自動作成されるため、`kiro-cli --agent clawd` または `/agent swap clawd` で挙動差を抑えながら hook を利用できます（Clawd 起動時に自動登録、または `npm run install:kiro-hooks`）。state hook は macOS と Windows で検証済みです。
-- **Kimi Code CLI (Kimi-CLI)** — `~/.kimi/config.toml` の command hook（`[[hooks]]` エントリ）に対応（Clawd 起動時に自動登録、または `npm run install:kimi-hooks`）
-- **Qwen Code** — `~/.qwen/settings.json` の command hook に対応（Clawd 起動時に自動登録、または `npm run install:qwen-hooks`）。状態追跡と Qwen `PermissionRequest` のデスクトップ権限バブルに対応します
-- **ZCode** — `~/.zcode/cli/config.json` の `hooks.events.*` に登録する、任意の状態 hook + blocking `PermissionRequest` hook（Settings → AI コーディングツール から導入、または `npm run install:zcode-hooks`）。Clawd は手動 Allow / Deny バブルを表示し、global / per-session の permission automation は defer のままです。明示的な global または hook 単位の `enabled:false` を保持し、第三者の `PermissionRequest` hook がある場合は上書きしません
-- **CodeWhale** — `~/.codewhale/config.toml` の任意の状態専用 lifecycle hooks（`[[hooks.hooks]]`；Settings → AI コーディングツール または `npm run install:codewhale-hooks` でインストール）。Phase 1 は状態アニメーションのみで、権限バブルやサブエージェント追跡は行いません
-- **Reasonix CLI** — `<Reasonix home>/settings.json` の任意の状態専用 command hooks（macOS/Linux: `~/.reasonix/settings.json`、Windows: `%APPDATA%\reasonix\settings.json`；Settings → AI コーディングツール または `npm run install:reasonix-hooks`）。ライフサイクル、ツール、通知、圧縮、サブエージェント終了を表示し、権限決定は Reasonix に残ります
-- **opencode** — `~/.config/opencode/` 配下の有効なファイル（`config.json` → `opencode.json` → `opencode.jsonc`、後のファイルが優先）経由の任意の [plugin integration](https://opencode.ai/docs/plugins)（Settings → AI コーディングツール からインストール）。遅延のないイベントストリーミングと Allow/Always/Deny 付きの権限バブルに対応します。`task` の子セッションは headless で、表示中のマルチセッションアニメーション集約には参加しません
-- **MiMo Code** — `~/.config/mimocode/mimocode.jsonc` 経由の任意の [plugin integration](https://opencode.ai/docs/plugins)（Settings → AI コーディングツール からインストール、または `node hooks/mimocode-install.js`）。opencode と同じ `@mimo-ai/plugin` SDK と権限動作を共有し、`task` の子セッションも headless です
-- **Pi** — `~/.pi/agent/extensions/clawd-on-desk` のグローバル extension で連携します（Clawd 起動時に自動登録、または `npm run install:pi-extension`）。インタラクティブな Pi セッションのライフサイクルとツール活動だけを状態同期し、Pi のデフォルト YOLO 動作を維持します
-- **OMP (oh-my-pi)** — `~/.omp/agent/extensions/clawd-on-desk` の任意のグローバル extension（Settings → AI コーディングツール または `npm run install:omp-extension`）。対話セッションとツールの状態のみを報告します。`session_stop` で完了候補を記録し、後続の終端 `agent_end` で extension の継続要求がないと確認してから完了します。コミュニティ bridge `clawd-on-desk-omp.ts` がある場合は保持して自身のインストールをスキップします
-- **OpenClaw** — `~/.openclaw/openclaw.json` の plugin path で state-only 連携します（OpenClaw config が既にある場合は Clawd 起動時に自動登録、または `npm run install:openclaw-plugin`）。Phase 1 はローカル `openclaw tui --local` セッションのアニメーションのみを対象とし、権限バブルやターミナルフォーカスには対応しません
-- **Hermes Agent** — Hermes の管理 plugin ディレクトリ経由の [plugin integration](https://hermes-agent.org/)（Hermes インストール済みの場合は Clawd 起動時に自動登録、または `npm run install:hermes-plugin`）。状態、セッション、SessionEnd、ターミナルフォーカスに対応
-- **Qoder** — `~/.qoder/settings.json` の command hook で state-only 連携します（`~/.qoder/` ディレクトリがある場合は Clawd 起動時に自動登録、または `npm run install:qoder-hooks`）。Phase 1 はアニメーションのみを対象とし、権限リクエストは通知として観察するだけで、Clawd は権限バブルを表示せず代わりに応答もしません。Allow / Deny は Qoder 自身の権限フローで選択します
-- **QoderWork** — `~/.qoderwork/settings.json` の任意の状態専用 command hooks（Settings → AI コーディングツール または `npm run install:qoderwork-hooks`）。Phase 1 はアニメーションと Session HUD を表示し、権限イベントを作業状態として静かに観察します。Allow / Deny は QoderWork のネイティブフローに残ります
-- **QwenWork（千问办公）** — `~/.QwenWorkCN/settings.json` の command hook による hook-only / state-only 連携です（Settings → AI コーディングツール から導入、または `npm run install:qwenwork-hooks`。削除は `npm run uninstall:qwenwork-hooks`）。対応プラットフォームは macOS / Windows デスクトップのみで、[qwenwork.cn/download](https://qwenwork.cn/download) に Linux クライアントはないため WSL ペアリングも提供しません。Phase 1 はアニメーションと Session HUD を駆動します。`PermissionRequest` / `PermissionDenied` は観察のみで `working` にマップされ、hook の stdout は常に `{}`、Clawd は allow/deny を返しません。権限の決定は QwenWork 自身のフローだけが行います。startup recovery はありません（デスクトップの常駐プロセスはターン実行中を意味しないため）
-- **DeepSeek Harness** — DSH の web profile と DeepSeek Harness デスクトップアプリ（macOS / Windows）に対応する、Clawd 管理の DSH in-process plugin を使った実験的な連携です。公開 session event が session ごとの順序で Clawd の状態を駆動し、公開の blocking `approval/request` は Allow Once / Deny バブルを表示できます。決定がなければ常に DSH 自身の承認フロー（web answerer、またはデスクトップアプリ自身の承認ダイアログ）に戻ります。`ask_user_question` は完全に DSH ネイティブ provider に残り、Clawd は DSH projection storage を一切読みません。詳細は [DeepSeek Harness ガイド](docs/guides/dsh-setup.md)
-- **TraeCode (Trae CN)** — `~/.trae-cn/hooks.json` を使う実験的な状態専用 hook 連携です（Settings → AI コーディングツール からインストール、または `npm run install:traecode-hooks`。削除は `npm run uninstall:traecode-hooks`）。Trae 側で hooks を手動で有効化してください（**Settings → Hooks → Enable**、実行モードは **Sandbox**。詳細は [Trae 公式 hooks ドキュメント](https://docs.trae.cn/ide/automate-actions-with-hooks)）。初回リリースは Trae 中国版のみが対象です。Clawd は最初のプロンプトからセッション名を作成し、権限判断は行いません。`SessionEnd` がないため、閉じた会話はデスクトップのアイドルタイムアウトで整理されます。
-- **MiniMax Code** — `<MINIMAX_DATA_DIR または MAVIS_DATA_DIR または ~/.minimax>/plugins/clawd-state/` の実験的な状態専用ローカル plugin（Settings → AI コーディングツール または `npm run install:minimax-hooks`；アンインストール: `npm run uninstall:minimax-hooks`）。mcode CLI とデスクトップアプリで `SessionEnd` を含む10個の状態イベントを報告します。handler は1–10秒に制限されるため blocking 承認はできず、`PermissionRequest` を登録せず stdout は常に `{}` です。読み込まれない場合は `mcode plugin enable clawd-state@local` または plugin パネルで有効化してください。タイトルは最初の prompt から取得して保持します
-- **複数エージェントの共存** — すべてのエージェントを同時に動かせます。Clawd は各セッションを個別に追跡します
+- **リアルタイムの状態表示**: エージェントの hook とログで動く 12 種類のアニメーション、視線追従、睡眠シーケンス、クリック反応、画面端から覗くミニモード
+- **主要ツールに対応**: Claude Code、Codex、Copilot、Gemini、Cursor、opencode、Kiro、Qwen など 20 以上、セッションごとに並行して追跡
+- **権限バブル**: フローティングカードやグローバルホットキーでツール要求を Allow / Deny、または自動承認に切り替え
+- **セッションを一目で**: ペットの横の HUD、ターミナルへ一発で戻れるライブセッションのダッシュボード、クォータリング、ローカルだけに保存されるリキャップ
+- **席を外していても**: Telegram や Feishu/Lark からリモート承認、Slack 通知、読み取り専用のモバイル PWA でスマホからセッションを確認
+- **自分好みに**: Clawd、Calico、Cloudling を内蔵、公式テーマのダウンロード、Codex Pet のインポート、自作テーマ
+- **どこでコードを書いても**: Windows（x64 / ARM64）、macOS、Linux、Remote SSH と WSL に対応、UI は 7 言語
 
-### アニメーションと操作
-- **リアルタイムな状態認識** — agent hook とログポーリングが Clawd のアニメーションを自動で切り替えます
-- **12 種類のアニメーション状態** — idle、thinking、typing、building、headphones groove、multi-subagent juggling、error、happy、notification、sweeping、carrying、sleeping
-- **Codex Pet インポート** — `Settings...` → `Theme` から Codex Pet zip パッケージをインポートすると、Clawd が atlas アニメーションを管理テーマに変換します
-- **視線追従** — idle 状態では Clawd がカーソルを追い、体の傾きや影の伸びも変化します
-- **睡眠シーケンス** — 60 秒アイドルが続くと、あくび、うとうと、倒れ込み、睡眠へ移行します。マウス移動で驚いて起きるアニメーションが再生されます
-- **クリックリアクション** — ダブルクリックでつつき、4 回クリックでじたばたします
-- **どの状態からでもドラッグ** — いつでも Clawd をつかめます（Pointer Capture により素早いフリックでも取り落としません）。離すと元の状態へ戻ります
-- **Mini mode** — 右端へドラッグ、または右クリックの「Mini Mode」で有効化。Clawd が画面端に隠れ、ホバーで顔を出し、mini 通知やお祝い、放物線ジャンプの遷移を行います
+機能の詳細: **[docs/guides/features.ja-JP.md](docs/guides/features.ja-JP.md)**
 
-### 権限バブル
-- **アプリ内権限レビュー** — Claude Code、Codex CLI、CodeBuddy、opencode、MiMo Code がツール権限を要求すると、ターミナルで待つ代わりに Clawd がフローティングバブルカードを表示します
-- **許可 / 拒否 / エージェント固有の追加操作** — ワンクリックで承認または拒否できます。対応エージェントでは permission rule や `Always` 操作も利用できます
-- **グローバルホットキー** — 最新の権限バブルに対して `Ctrl+Shift+Y` で許可、`Ctrl+Shift+N` で拒否（バブル表示中だけ登録されます）
-- **スタックレイアウト** — 複数の権限リクエストは右下から上方向へ積み重なります
-- **自動消去** — 先にターミナルで回答した場合、バブルは自動的に消えます
-- **エージェントごとの切り替え** — `Settings...` → `AI コーディングツール` でエージェントを選び、`Show pop-up bubbles` をオフにすると、そのエージェント自身のターミナル/TUI に確認を残せます
+## クイックスタート
 
-### リモート通知
-- **Telegram / Feishu（Lark）** — インタラクティブなリモート承認：権限リクエストをスマートフォンへ転送し、デスクトップに戻らず Allow / Deny できます
-- **Slack** — **通知専用**：Slack Incoming Webhook（または任意の `xoxb-` Bot Token + channel id）を使い、タスクの**完了**、**エラー**、**権限リクエスト**を Block Kit カードで送信します。このバージョンでは Slack から Allow / Deny はできません。権限メッセージは通知のみで、判断はデスクトップアプリで行います。Telegram / Feishu と同じリモート承認設定にあり、secret は prefs 外のローカル env ファイルに保存されます（macOS / Linux は `0600`、Windows は AppData ACL）。未設定またはオフライン時は安全にフォールバックします。メッセージには session title、folder、host name が含まれる場合があるため、private channel を推奨します。詳細は [Slack 通知ガイド](docs/guides/slack-notifications.md)
+**[GitHub Releases](https://github.com/rullerzhou-afk/clawd-on-desk/releases/latest)** から最新のインストーラーをダウンロードしてください:
 
-### セッション情報
-- **マルチセッション追跡** — すべてのエージェントのセッションから、優先度の最も高い状態を解決します
-- **サブエージェント認識** — サブエージェント 1 個で headphones groove、2 個以上で three-ball juggling
-- **Sessions dashboard + HUD** — 右クリックまたは tray → `Open Dashboard` から live session、最近のイベント、エイリアス、ターミナルジャンプを確認できます。Clawd の近くにはコンパクトな HUD が表示され、現在の live session を見失いません
-- **ターミナルフォーカス** — Dashboard/HUD の操作で特定セッションのターミナルへジャンプできます。notification/attention 状態では関連するターミナルを自動で前面にします
-- **プロセス生存確認** — 対応エージェントのプロセスがクラッシュまたは終了したことを検知し、孤立セッションを片付けます
-- **起動時リカバリー** — Clawd の再起動時に対応エージェントがまだ動いていれば、眠らずに起きたままになります
+| プラットフォーム | ダウンロード |
+|---|---|
+| Windows | `Clawd-on-Desk-Setup-<version>-x64.exe` または `-arm64.exe` |
+| macOS | `.dmg`、または `brew install --cask clawd-on-desk` |
+| Linux | `.AppImage` または `.deb`（x86_64 では Homebrew も可） |
 
-### モバイルコンパニオン（PWA）
-- **スマホでライブミラー** — `Settings...` → `Mobile / PWA` を有効にし、スマホでペアリング URL を開くと、Clawd Mobile ウェブアプリがエージェントのセッションと状態をリアルタイムに表示します
-- **読み取り専用設計** — LAN ブリッジは状態のブロードキャストのみを行い、スマホから PC を操作することはできません（リモート承認はロードマップにあります）
-- **LAN 限定 + トークン保護** — ペアリングにはトークンが必要で、トークンは猶予期間つきで自動ローテーションされ、ワンクリックで再生成・リセットできます
-- **インストール可能** — PWA なので、ホーム画面に追加すればアプリのように使えます
-> モバイルコンパニオンのラインは、最初のプロトタイプからトークンローテーションまで、コアコントリビューター [@Bynlk](https://github.com/Bynlk) が作り上げ、リードしています。ネイティブ Android アプリを備えた姉妹プロジェクト [clawd-on-mobile](https://github.com/Bynlk/clawd-on-mobile) も同氏がメンテナンスしています。
+Clawd を起動すればすぐに反応し始めます。初回起動時に Claude Code と Codex が自動で接続され、ほかのエージェントは **Settings → AI コーディングツール** からワンクリックでインストールできます。
 
-### システム
-- **クリック透過** — 透明部分のクリックは背面ウィンドウへ通り、Clawd の体だけが操作対象になります
-- **位置の記憶** — 再起動後も最後に置いた場所を覚えます（mini mode を含む）
-- **単一インスタンスロック** — Clawd ウィンドウの重複起動を防ぎます
-- **自動起動** — Claude Code の SessionStart hook により、Clawd が起動していない場合に自動で起動できます
-- **Do Not Disturb** — 右クリックまたは tray メニューから sleep mode に入り、起こすまで hook event をすべて抑制します。DND 中は権限バブルも抑制されます。Codex、opencode、MiMo Code はネイティブプロンプトに戻り、Claude Code と CodeBuddy は組み込みの権限フローに戻ります。Antigravity と Pi は state-only です
-- **効果音** — タスク完了や権限リクエスト時に短い音を鳴らします（システムトレイまたは設定から切り替え、10 秒クールダウン、DND 中は自動ミュート）
-- **システムトレイ** — DND mode、自動起動、更新確認
-- **i18n** — English、簡体中文、繁体中文、Korean、Japanese、Português (Brasil)、Español UI。設定 → 一般から切り替えできます
-- **自動更新** — GitHub Releases を確認します。Windows では終了時に NSIS 更新を適用し、macOS/Linux では clone したリポジトリから実行している場合に `git pull` + restart を行います
+<details>
+<summary><strong>ソースから実行</strong></summary>
+<br/>
 
-## アニメーション
+コントリビュート、未リリースコードのテスト、連携のデバッグをするときだけ必要です。ソースインストールでは Electron とビルドツールをダウンロードするため、`node_modules` が大きくなります。
+
+```bash
+# リポジトリを clone
+git clone https://github.com/rullerzhou-afk/clawd-on-desk.git
+cd clawd-on-desk
+
+# 依存関係をインストール
+npm install
+
+# Clawd を起動（起動時に Claude Code と Codex の hooks を自動登録）
+npm start
+```
+
+前提条件、Remote SSH、WSL、macOS / Linux の注意点: **[セットアップガイド](docs/guides/setup-guide.md)**
+
+</details>
+
+## 対応エージェント
+
+> **Claude Code** · **Codex CLI** · **Copilot CLI** · **Gemini CLI** · **Antigravity CLI (agy)** · **Cursor Agent** · **CodeBuddy** · **WorkBuddy** · **Grok Build** · **Kiro CLI** · **KiroCrew** · **Kimi Code CLI (Kimi-CLI)** · **Qwen Code** · **ZCode** · **CodeWhale** · **opencode** · **MiMo Code** · **Pi** · **OMP** · **OpenClaw** · **Hermes Agent** · **Qoder** · **QoderWork** · **QwenWork（千问办公）** · **Reasonix CLI** · **DeepSeek Harness** · **TraeCode (Trae CN)** · **MiniMax Code**
+
+Claude Code と Codex CLI は初回起動時に接続されます。ほかの連携は **Settings → AI コーディングツール** からインストールすると、Clawd が同期を保ちます。そのほかのローカルツールは [カスタム HTTP エージェント](docs/guides/custom-agent-http.md) のエンドポイントから状態を送れます。エージェントごとの詳細は **[対応エージェント](docs/guides/supported-agents.ja-JP.md)**、権限バブルがないエージェントなどの違いは **[既知の制限](docs/guides/known-limitations.md)** を参照してください。
+
+## テーマ
 
 <table>
   <tr>
@@ -144,90 +100,22 @@ Clawd はデスクトップに住むペットで、AI コーディングエー�
   </tr>
 </table>
 
-event-to-state mapping、mini mode、クリックリアクションの詳細: **[docs/guides/state-mapping.md](docs/guides/state-mapping.md)**
+**Clawd**（ピクセルのカニ）、**Calico**（三毛猫）、**Cloudling**（云宝）を内蔵しています。**Hash Sage**（哈希仙人）と **Whale-chan**（鲸鱼娘）は **Settings → テーマ** からダウンロードできる公式テーマで、同じ画面で Codex Pet の zip もインポートできます。自分で描くなら `npm run create-theme -- my-theme` を実行して **[テーマ作成ガイド](docs/guides/guide-theme-creation.md)** へ。イベントとアニメーションの対応: [状態マッピング](docs/guides/state-mapping.md)。
 
-## マルチディスプレイ
+## ガイド
 
-Clawd はマルチモニター環境に適応します。起動したディスプレイに合わせて比例サイズを決め、縦長モニターでは読みやすさを保つために上限付きで拡大し、ディスプレイ間のドラッグにも対応します。
-
-<p align="center"><sub>実際のマルチモニター挙動は、<a href="assets/videos/clawd-multi-monitor-demo.mp4">このリポジトリ内のデモ動画</a>で確認できます。</sub></p>
-
-## クイックスタート
-
-通常利用では、**[GitHub Releases](https://github.com/rullerzhou-afk/clawd-on-desk/releases/latest)** から最新のビルド済みインストーラーをダウンロードしてください。
-
-- **Windows**: `Clawd-on-Desk-Setup-<version>-x64.exe` または `Clawd-on-Desk-Setup-<version>-arm64.exe`
-- **macOS**: `.dmg`
-- **Linux**: `.AppImage` または `.deb`
-
-macOS、または Linux x86_64 では Homebrew でもインストールできます。
-
-```bash
-brew install --cask clawd-on-desk
-```
-
-インストール後に Clawd を起動してください。対応エージェントの hook/plugin は起動時に自動同期されます。
-
-ソースからの実行は、コントリビュート、未リリースコードのテスト、または連携のデバッグを行う場合だけを推奨します。ソースインストールでは Electron/build tooling をダウンロードし、大きな `node_modules` ツリーが作成されることがあります。
-
-```bash
-# リポジトリを clone
-git clone https://github.com/rullerzhou-afk/clawd-on-desk.git
-cd clawd-on-desk
-
-# 依存関係をインストール
-npm install
-
-# Clawd を起動（起動時に Claude Code hooks を自動登録）
-npm start
-```
-
-**Claude Code** と **Codex CLI** はデフォルトで hook が同期されます。その他の Agent は、先に **Settings → AI コーディングツール** で対応する integration をインストールしてください。インストール済みかつ有効な integration だけが Clawd 起動時に同期されます。Remote SSH、WSL、macOS/Linux のプラットフォーム別メモも含めた詳細: **[docs/guides/setup-guide.md](docs/guides/setup-guide.md)**
-
-リモートサーバーで Claude Code / Codex CLI を動かし、状態と権限バブルをローカル Clawd に転送したい場合は、アプリ内の **Settings → Remote SSH → Deploy / Repair Hooks** を使います。共有サーバー分離の境界、完全な手順、Doctor の境界、FAQ はこちら: **[docs/guides/guide-remote-ssh.md](docs/guides/guide-remote-ssh.md)**
-
-公式の `Codex + WSL` ステータス、Clawd の現在の実装境界、そして誤解しやすい理由については、こちらを参照してください: **[docs/guides/codex-wsl-clarification.md](docs/guides/codex-wsl-clarification.md)**
-
-## 既知の制限
-
-一部のエージェントには機能差があります（権限バブルなし、ポーリング遅延、ターミナルフォーカスなしなど）。完全な表はこちら: **[docs/guides/known-limitations.md](docs/guides/known-limitations.md)**
-
-## カスタムテーマ
-
-Clawd はカスタムテーマに対応しています。標準のカニを、自分のキャラクターやアニメーションに置き換えられます。既存の Codex Pet パッケージがある場合は、`Settings...` → `Theme` → `Import pet zip` から取り込むと、Clawd が atlas を管理テーマへ自動変換します。
-
-**クイックスタート:**
-1. テーマを scaffold します。
-   ```bash
-   node scripts/create-theme.js my-theme
-   # または
-   npm run create-theme -- my-theme
-   ```
-   引数なしでも動作します。ユーザーテーマディレクトリ内に、次に利用可能な `my-theme` scaffold を作成します。
-2. `theme.json` を編集し、アセット（SVG、GIF、APNG、WebP、PNG、JPG、JPEG）を作成します
-3. Clawd を再起動するか、`Settings...` → `Theme` → 自分のテーマを選択します
-
-**最小構成のテーマ:** SVG 1 個（視線追従付き idle）+ GIF/APNG 7 個（thinking、working、error、happy、notification、sleeping、waking）。視線追従を無効にすれば、すべての状態で任意の形式を利用できます。
-
-配布前にテーマを検証してください。
-```bash
-node scripts/validate-theme.js path/to/your-theme
-```
-
-`Settings...` → `Theme` のテーマカードには、`Tracked idle`、`Static theme`、`Mini`、`Direct sleep`、`No reactions` などの capability badge が表示されるため、ユーザーは切り替える前にテーマの対応範囲を確認できます。
-
-初心者から上級者までの段階別パス、`theme.json` のフィールドリファレンス、アセットガイドラインを含む完全な作成ガイドは [docs/guides/guide-theme-creation.md](docs/guides/guide-theme-creation.md) を参照してください。
-
-> サードパーティ製 SVG ファイルは、セキュリティのため自動で sanitize されます。
-
-### Roadmap
-
-今後検討したい項目です。
-
-- `codex.exe` PID からのプロセスツリー lookup による Codex ターミナルフォーカス
-- テーマレジストリとアプリ内ダウンロード
-- アプリのクリーン削除用 hook uninstall script
-- モバイルコンパニオン: スマホからのリモート権限承認（[@Bynlk](https://github.com/Bynlk) 主導で進行中）
+| ガイド | 内容 |
+|---|---|
+| [機能](docs/guides/features.ja-JP.md) | すべての機能の詳細 |
+| [セットアップガイド](docs/guides/setup-guide.md) | ソースビルド、エージェント設定、Windows / macOS / Linux の注意点 |
+| [権限の扱い](docs/guides/setup-guide.md#permission-handling-automation) | 毎回確認、質問プロンプトのみ、自動承認 |
+| [Remote SSH](docs/guides/guide-remote-ssh.md) | リモートサーバー上のエージェントの状態と権限バブル |
+| [Codex + WSL](docs/guides/codex-wsl-clarification.md) | WSL 内の Codex に対する Clawd の対応範囲 |
+| [リモート承認](docs/guides/telegram-approval.md) | Telegram、[Feishu / Lark](docs/guides/feishu-lark-remote-approval.md)、[Slack 通知](docs/guides/slack-notifications.md) |
+| [リキャップ](docs/guides/recap.md) | ローカルだけに保存されるアクティビティの振り返り |
+| [カスタム HTTP エージェント](docs/guides/custom-agent-http.md) | まだ連携していないツールをつなぐ |
+| [既知の制限](docs/guides/known-limitations.md) | エージェントごとの機能差 |
+| [テーマ作成](docs/guides/guide-theme-creation.md) | 自作テーマの作成と検証 |
 
 ## コントリビュート
 
