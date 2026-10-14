@@ -55,6 +55,9 @@ module.exports = {
   capabilities: {
     httpHook: false,
     permissionApproval: false,
+    // State-only: Command Code has no PermissionRequest event and Clawd never
+    // answers PreToolUse, so there is no permission request to observe.
+    mobilePermissionObservation: false,
     interactiveBubble: false,
     // Command Code has no Notification hook event.
     notificationHook: false,
