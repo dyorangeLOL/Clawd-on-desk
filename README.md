@@ -131,7 +131,7 @@ Join our [Discord community](https://discord.gg/VQsQZbZCPx) to get help, share t
   </tr>
   <tr>
     <td align="center"><img src="assets/readme/wechat-official-account.jpg" width="200" alt="QR code for the WeChat official account 鹿鹿的学习笔记"><br><b>鹿鹿的学习笔记</b><br>Scan to follow on WeChat</td>
-    <td align="center"><img src="assets/readme/wechat-group-contact.png" width="200" alt="WeChat contact QR code for a group invite"><br><b>Join the WeChat group</b><br>Scan to add us on WeChat<br>and receive a group invite</td>
+    <td align="center"><img src="assets/readme/wechat-group-contact.png" width="200" alt="WeChat contact QR code for a group invite"><br><b>Join the WeChat group</b><br>Scan to add 云宝.bot on WeChat<br>Once your friend request is accepted,<br>we’ll invite you to the group</td>
   </tr>
 </table>
 

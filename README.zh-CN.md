@@ -131,7 +131,7 @@ Claude Code 和 Codex CLI 首次启动即接入；其他集成在 **设置 → A
   </tr>
   <tr>
     <td align="center"><img src="assets/readme/wechat-official-account.jpg" width="200" alt="微信公众号「鹿鹿的学习笔记」二维码"><br><b>鹿鹿的学习笔记</b><br>扫码关注公众号</td>
-    <td align="center"><img src="assets/readme/wechat-group-contact.png" width="200" alt="微信交流群联系人二维码"><br><b>加入微信交流群</b><br>扫码添加微信，邀请入群</td>
+    <td align="center"><img src="assets/readme/wechat-group-contact.png" width="200" alt="微信交流群联系人二维码"><br><b>加入微信交流群</b><br>扫码添加「云宝.bot」为微信好友<br>通过好友申请后邀请入群</td>
   </tr>
 </table>
 
