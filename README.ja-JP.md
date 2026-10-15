@@ -11,6 +11,7 @@
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License"></a>
   <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge-flat.svg" alt="Mentioned in Awesome Claude Code"></a>
+  <a href="https://discord.gg/VQsQZbZCPx"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?style=flat-square&amp;logo=discord&amp;logoColor=white" alt="Discord"></a>
 </div>
 
 <p align="center">
@@ -118,6 +119,10 @@ Claude Code と Codex CLI は初回起動時に接続されます。ほかの連
 | [カスタム HTTP エージェント](docs/guides/custom-agent-http.md) | まだ連携していないツールをつなぐ |
 | [既知の制限](docs/guides/known-limitations.md) | エージェントごとの機能差 |
 | [テーマ作成](docs/guides/guide-theme-creation.md) | 自作テーマの作成と検証 |
+
+## コミュニティ
+
+[Discord コミュニティ](https://discord.gg/VQsQZbZCPx)で、使い方の相談、テーマやデスクトップ環境の共有、アイデアの交換ができます。英語・中国語で気軽にご参加ください。バグ報告は追跡できるよう、[GitHub Issues](https://github.com/rullerzhou-afk/clawd-on-desk/issues) にお願いします。
 
 ## コントリビュート
 

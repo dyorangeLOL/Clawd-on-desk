@@ -11,6 +11,7 @@
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License"></a>
   <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge-flat.svg" alt="Mentioned in Awesome Claude Code"></a>
+  <a href="https://discord.gg/VQsQZbZCPx"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?style=flat-square&amp;logo=discord&amp;logoColor=white" alt="Discord"></a>
 </div>
 
 <p align="center">
@@ -118,6 +119,10 @@ Claude Code와 Codex CLI는 첫 실행 때 연결됩니다. 다른 통합은 **S
 | [커스텀 HTTP 에이전트](docs/guides/custom-agent-http.md) | 아직 통합되지 않은 도구 연결 |
 | [알려진 제한 사항](docs/guides/known-limitations.md) | 에이전트별 기능 차이 |
 | [테마 제작](docs/guides/guide-theme-creation.md) | 나만의 테마 만들기와 검증 |
+
+## 커뮤니티
+
+[Discord 커뮤니티](https://discord.gg/VQsQZbZCPx)에서 사용 도움을 받고, 테마와 데스크톱 구성을 공유하거나 아이디어를 나눠 보세요. 영어와 중국어로 소통할 수 있습니다. 버그는 추적할 수 있도록 [GitHub Issues](https://github.com/rullerzhou-afk/clawd-on-desk/issues)에 제보해 주세요.
 
 ## 기여하기
 

@@ -11,6 +11,7 @@
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License"></a>
   <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge-flat.svg" alt="Mentioned in Awesome Claude Code"></a>
+  <a href="https://discord.gg/VQsQZbZCPx"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?style=flat-square&amp;logo=discord&amp;logoColor=white" alt="Discord"></a>
 </div>
 
 <p align="center">
@@ -118,6 +119,10 @@ Claude Code 和 Codex CLI 第一次啟動就會接上；其他整合在 **設定
 | [自訂 HTTP agent](docs/guides/custom-agent-http.md) | 接入 Clawd 尚未整合的工具 |
 | [已知限制](docs/guides/known-limitations.md) | 各 agent 的功能差異 |
 | [主題創作](docs/guides/guide-theme-creation.md) | 製作並驗證自己的主題 |
+
+## 社群
+
+歡迎加入 [Discord 社群](https://discord.gg/VQsQZbZCPx)，交流使用心得、尋求協助、分享主題和桌面配置，也歡迎討論新想法。支援中文和英文交流；Bug 請提交至 [GitHub Issues](https://github.com/rullerzhou-afk/clawd-on-desk/issues)，方便追蹤。
 
 ## 參與貢獻
 

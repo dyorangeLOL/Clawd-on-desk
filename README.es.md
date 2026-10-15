@@ -11,6 +11,7 @@
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey?style=flat-square" alt="Platform">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License"></a>
   <a href="https://github.com/hesreallyhim/awesome-claude-code"><img src="https://awesome.re/mentioned-badge-flat.svg" alt="Mentioned in Awesome Claude Code"></a>
+  <a href="https://discord.gg/VQsQZbZCPx"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?style=flat-square&amp;logo=discord&amp;logoColor=white" alt="Discord"></a>
 </div>
 
 <p align="center">
@@ -118,6 +119,10 @@ Herramienta de la comunidad: [Live2Pet](https://github.com/receyuki/live2pet), d
 | [Agentes HTTP personalizados](docs/guides/custom-agent-http.md) | Conecta una herramienta que Clawd aún no integra |
 | [Limitaciones conocidas](docs/guides/known-limitations.md) | Diferencias de funciones por agente |
 | [Creación de temas](docs/guides/guide-theme-creation.md) | Crea y valida tu propio tema |
+
+## Comunidad
+
+Únete a nuestra [comunidad de Discord](https://discord.gg/VQsQZbZCPx) para pedir ayuda, compartir temas y configuraciones de escritorio o intercambiar ideas. Puedes participar en inglés o chino. Informa de los errores en [GitHub Issues](https://github.com/rullerzhou-afk/clawd-on-desk/issues) para que podamos darles seguimiento.
 
 ## Contribuir
 
