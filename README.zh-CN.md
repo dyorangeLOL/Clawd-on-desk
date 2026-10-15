@@ -124,6 +124,17 @@ Claude Code 和 Codex CLI 首次启动即接入；其他集成在 **设置 → A
 
 欢迎加入 [Discord 社区](https://discord.gg/VQsQZbZCPx)，交流使用心得、寻求帮助、分享主题和桌面配置，也欢迎讨论新想法。支持中文和英文交流；Bug 请提交到 [GitHub Issues](https://github.com/rullerzhou-afk/clawd-on-desk/issues)，方便跟进。
 
+<table>
+  <tr>
+    <th align="center">微信公众号</th>
+    <th align="center">微信交流群</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/readme/wechat-official-account.jpg" width="200" alt="微信公众号「鹿鹿的学习笔记」二维码"><br><b>鹿鹿的学习笔记</b><br>扫码关注公众号</td>
+    <td align="center"><img src="assets/readme/wechat-group-contact.png" width="200" alt="微信交流群联系人二维码"><br><b>加入微信交流群</b><br>扫码添加微信，邀请入群</td>
+  </tr>
+</table>
+
 ## 参与贡献
 
 Clawd on Desk 是一个社区驱动的项目。欢迎提 Bug、提需求、提 PR —— 在 [Issues](https://github.com/rullerzhou-afk/clawd-on-desk/issues) 里聊或直接提交 PR。从源码运行、加翻译、接入新 agent 的做法见 [参与贡献指南](CONTRIBUTING.zh-CN.md)。

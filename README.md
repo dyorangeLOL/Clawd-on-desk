@@ -124,6 +124,17 @@ Community tool: [Live2Pet](https://github.com/receyuki/live2pet) by @receyuki tu
 
 Join our [Discord community](https://discord.gg/VQsQZbZCPx) to get help, share themes and desktop setups, or discuss ideas. English and Chinese are welcome. Please report bugs through [GitHub Issues](https://github.com/rullerzhou-afk/clawd-on-desk/issues) so we can track them.
 
+<table>
+  <tr>
+    <th align="center">WeChat Official Account</th>
+    <th align="center">WeChat Group</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/readme/wechat-official-account.jpg" width="200" alt="QR code for the WeChat official account 鹿鹿的学习笔记"><br><b>鹿鹿的学习笔记</b><br>Scan to follow on WeChat</td>
+    <td align="center"><img src="assets/readme/wechat-group-contact.png" width="200" alt="WeChat contact QR code for a group invite"><br><b>Join the WeChat group</b><br>Scan to add us on WeChat<br>and receive a group invite</td>
+  </tr>
+</table>
+
 ## Contributing
 
 Clawd on Desk is a community-driven project. Bug reports, feature ideas, and pull requests are all welcome — open an [issue](https://github.com/rullerzhou-afk/clawd-on-desk/issues) to discuss or submit a PR directly. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run from source, add a translation, or integrate a new agent.
