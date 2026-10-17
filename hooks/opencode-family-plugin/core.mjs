@@ -517,9 +517,13 @@ export function evaluateManagedLayoutGate(metaUrl, config = {}) {
  */
 export function resolveOpencodeServeAttachUrl(agentId, argv, value) {
   if (agentId !== "opencode" || !Array.isArray(argv)) return null;
-  // Native v1 CLI argv: [executable, serve, ...]. Never infer from the URL:
-  // the normal TUI also exposes an internal SDK endpoint.
-  if (argv[1] !== "serve") return null;
+  // The native release runs ["opencode", "serve", ...]; the Bun-compiled
+  // build observed on Windows runs ["bun", "<embedded>.js", "serve", ...].
+  // Only the first real command token counts, so a TUI directory argument can
+  // never be mistaken for serve mode.
+  const bundledScript = typeof argv[1] === "string" && /\.(?:c|m)?js$/i.test(argv[1]);
+  const commandIndex = bundledScript ? 2 : 1;
+  if (argv[commandIndex] !== "serve") return null;
   try {
     const raw = String(value || "");
     if (!raw || raw.length > 2048 || /[\s\u0000-\u001f\u007f]/u.test(raw)) return null;

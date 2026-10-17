@@ -34,8 +34,10 @@ async function emit(plugin,handler,type,id,dir,extra={}){
 test("explicit serve mode and root HTTP URL are required; internal TUI URL is never advertised",()=>{
   const get=core.resolveOpencodeServeAttachUrl;
   assert.equal(get("opencode",["opencode.exe","serve"],new URL("http://0.0.0.0:4096")),"http://127.0.0.1:4096/");
+  assert.equal(get("opencode",["bun","B:/~BUN/root/src/index.js","serve","--port","4096"],new URL("http://0.0.0.0:4096")),"http://127.0.0.1:4096/");
   assert.equal(get("opencode",["opencode.exe","serve"],"http://[::]:4096/"),"http://[::1]:4096/");
-  for(const argv of [["opencode.exe"],["opencode.exe","attach","serve"],["opencode.exe","project\\serve"]])
+  for(const argv of [["opencode.exe"],["opencode.exe","attach","serve"],["opencode.exe","project\\serve"],
+    ["bun","B:/~BUN/root/src/index.js"],["bun","B:/~BUN/root/src/index.js","attach"]])
     assert.equal(get("opencode",argv,"http://localhost:4096/"),null);
   for(const url of ["http://opencode.local/","http://u:secret@localhost:4096/","http://localhost:4096/?token=x"])
     assert.equal(get("opencode",["opencode.exe","serve"],url),null);
