@@ -14,7 +14,10 @@ Ordinary TUI internal URLs, v2 daemon, MiMo, headless child sessions, WSL, Remot
 ## Validation status for the first contribution
 
 - Capability regressions were demonstrated failing before implementation, then passing.
-- Focused plugin, target/launcher, routing/state, snapshot, trusted IPC and translation suite: 300 passed, zero failed.
-- Full Windows suite: 13,113 passed, 24 failed, 125 skipped. The failing files are being compared with clean main; this is not a claim that the full suite is green.
-- OpenCode 1.18.31 was installed in an isolated directory and its native executable and `attach --session --dir` help were checked.
-- Real serve/attach smoke is **pending**: the isolated server start was denied by the environment's permission check. Neither real host argv/SDK endpoint identity nor actual session selection in Windows Terminal has been proven. This work should remain a draft until that verification is completed.
+- Focused plugin, target/launcher, routing/state, snapshot, trusted IPC and translation suite: 323 passed, zero failed.
+- OpenCode 1.18.31 was installed in an isolated directory. Its native executable and `attach --session --dir` help were checked.
+- Real isolated serve smoke on Windows: the actual host ran argv `["bun", "<embedded>.js", "serve", …]` with a wildcard IPv4 listener. The plugin reported `opencode_attach_url: http://127.0.0.1:4616/` (wildcard rewritten) on both SessionStart and the metadata-only title update, scoped to the session's directory. A real `opencode attach` process accepted the emitted session ID (stayed running) and rejected an unknown ID with `Session not found`.
+- The exact generated PowerShell command was executed with a directory containing spaces, Chinese characters, `&`, `%`, `'` and `$`; `Set-Location` succeeded and `attach` started without shell re-parsing.
+- The real Windows Terminal window launch itself, and clicking the Dashboard action against a live Clawd, were not exercised. The dashboard button was checked in a synthetic-session preview, not against a real session.
+- Full-suite result is recorded in the PR; it is not claimed to be green on this Windows host.
+
